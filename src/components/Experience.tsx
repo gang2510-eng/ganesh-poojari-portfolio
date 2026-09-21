@@ -1,7 +1,5 @@
 'use client';
 
-import { Briefcase, Building2, MapPin } from 'lucide-react';
-
 interface ExperienceItem {
   period: string;
   role: string;
@@ -43,68 +41,69 @@ export default function Experience() {
     {
       period: '2006 – 2012',
       role: 'Lead & Freelance Character Modeler',
-      company: 'Tata Elxsi, PIXION. CCL, Crest Animation Studios, Raj Taru VFX',
+      company: 'Tata Elxsi, PIXION, Crest Animation Studios, Raj Taru VFX',
       location: 'India',
       description: 'Built foundational expertise as Lead Character Modeler and freelance texturing artist across digital animation and VFX studios.',
     },
   ];
 
   return (
-    <section id="experience" className="py-24 border-t border-zinc-800/60 bg-[#09090b] relative overflow-hidden">
-      {/* Background Artwork Layer (Ganesh's Real ArtStation 3D Work) */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.05]">
-        <img
-          src="/artwork/artstation_6.jpg"
-          alt="Ganesh Poojari ArtStation 3D Work"
-          className="w-full h-full object-cover object-center filter grayscale scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#09090b]/80 via-[#09090b]/90 to-[#09090b]" />
-      </div>
-
-      <div className="container max-w-5xl mx-auto px-4 z-10 relative">
+    <section
+      id="experience"
+      className="relative py-[80px] lg:py-[140px] border-b border-[var(--line)] bg-[var(--bg)]"
+    >
+      <div className="max-w-[1240px] mx-auto px-6">
         
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-medium text-zinc-500 uppercase tracking-widest bg-zinc-900/90 px-3 py-1 rounded-full border border-zinc-800">
-            Career Timeline
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-semibold tracking-tight mt-4 text-zinc-100">
-            Work Experience
-          </h2>
+        {/* Asymmetric Section Header */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 mb-16 items-end">
+          <div className="lg:col-span-5">
+            <span className="micro-label text-[var(--text-3)] block mb-3">
+              Career History
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-[var(--text-1)] leading-none">
+              Work Experience
+            </h2>
+          </div>
+          <div className="lg:col-span-7 lg:col-start-6">
+            <p className="text-[17px] leading-[1.65] text-[var(--text-2)] max-w-[68ch]">
+              Supervisory leadership and lead modeling roles across North American and Indian facilities, delivering 52 verified credits over two decades.
+            </p>
+          </div>
         </div>
 
-        {/* Timeline Stack */}
-        <div className="space-y-8 relative before:absolute before:inset-0 before:left-4 md:before:left-1/2 before:-translate-x-px before:h-full before:w-px before:bg-zinc-800">
+        {/* Line-based Timeline Stack */}
+        <div className="border border-[var(--line)] rounded-[var(--radius)] divide-y divide-[var(--line)] overflow-hidden">
           {experiences.map((exp, index) => (
-            <div key={index} className="relative flex flex-col md:flex-row items-start group">
-              
-              {/* Timeline Indicator Dot */}
-              <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-zinc-950 border border-zinc-600 z-10" />
-
-              {/* Content Card */}
-              <div className={`w-full md:w-1/2 pl-12 md:pl-0 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12 md:ml-auto'}`}>
-                <div className="double-bezel">
-                  <div className="double-bezel-inner p-5 sm:p-6">
-                    <span className="inline-block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
-                      {exp.period}
-                    </span>
-                    <h3 className="text-lg font-semibold text-zinc-100 mb-1 flex items-center gap-2 justify-start">
-                      <Briefcase className="w-4 h-4 text-zinc-400 inline md:hidden" />
-                      {exp.role}
-                    </h3>
-                    <div className="flex items-center gap-2 text-xs sm:text-sm text-zinc-300 font-medium mb-3">
-                      <Building2 className="w-4 h-4 text-zinc-400" />
-                      <span>{exp.company}</span>
-                      <span className="text-zinc-600">•</span>
-                      <MapPin className="w-3.5 h-3.5 text-zinc-500" />
-                      <span className="text-zinc-400 text-xs">{exp.location}</span>
-                    </div>
-                    <p className="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed">
-                      {exp.description}
-                    </p>
-                  </div>
+            <div
+              key={index}
+              className="p-6 sm:p-8 hover:bg-[#0c121c]/40 transition-colors"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-start">
+                
+                {/* Meta Column (Cols 1–4) */}
+                <div className="lg:col-span-4 flex flex-col items-start">
+                  <span className="micro-label text-[10px] text-[var(--text-3)] mb-1.5 tabular-nums">
+                    {exp.period}
+                  </span>
+                  <span className="text-base font-semibold text-[var(--text-1)]">
+                    {exp.company}
+                  </span>
+                  <span className="text-xs text-[var(--text-3)] mt-0.5">
+                    {exp.location}
+                  </span>
                 </div>
-              </div>
 
+                {/* Content Column (Cols 5–12) */}
+                <div className="lg:col-span-8">
+                  <h3 className="text-base sm:text-lg font-semibold text-[var(--text-1)] mb-2">
+                    {exp.role}
+                  </h3>
+                  <p className="text-sm text-[var(--text-2)] leading-relaxed max-w-[68ch]">
+                    {exp.description}
+                  </p>
+                </div>
+
+              </div>
             </div>
           ))}
         </div>

@@ -1,3 +1,4 @@
+import LeftRail from '@/components/LeftRail';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import SelectedWork from '@/components/SelectedWork';
@@ -10,7 +11,8 @@ import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#09090b] text-slate-100 relative">
+    <main className="min-h-screen bg-[var(--bg)] text-[var(--text-1)] relative">
+      <LeftRail />
       <Navbar />
       <Hero />
       <SelectedWork />

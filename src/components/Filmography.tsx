@@ -1,18 +1,14 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { ExternalLink, ChevronDown, ChevronUp, ArrowUpDown, ChevronRight, Info } from 'lucide-react';
+import { ChevronDown, ChevronUp, ChevronRight, ExternalLink } from 'lucide-react';
 import { filmographyData, FilmCredit } from '@/data/filmographyData';
 
 type CategoryFilter = 'all' | 'film' | 'tv';
-type SortField = 'year' | 'title' | 'studio' | 'role';
-type SortDirection = 'asc' | 'desc';
 
 export default function Filmography() {
   const [filter, setFilter] = useState<CategoryFilter>('all');
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const [sortField, setSortField] = useState<SortField>('year');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [expandedContributions, setExpandedContributions] = useState<Record<string, boolean>>({});
 
   const toggleContribution = (id: string) => {
@@ -22,16 +18,7 @@ export default function Filmography() {
     }));
   };
 
-  const handleSort = (field: SortField) => {
-    if (sortField === field) {
-      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
-    } else {
-      setSortField(field);
-      setSortDirection(field === 'year' ? 'desc' : 'asc');
-    }
-  };
-
-  // Filtered and sorted credits
+  // Filter credits
   const filteredCredits = useMemo(() => {
     return filmographyData.filter((item) => {
       if (filter === 'all') return true;
@@ -39,245 +26,284 @@ export default function Filmography() {
     });
   }, [filter]);
 
-  const sortedCredits = useMemo(() => {
-    return [...filteredCredits].sort((a, b) => {
-      const aVal = a[sortField] || '';
-      const bVal = b[sortField] || '';
-
-      if (sortField === 'year') {
-        // Parse leading numeric year for reliable comparison
-        const aNum = parseInt(aVal.match(/\d{4}/)?.[0] || '0', 10);
-        const bNum = parseInt(bVal.match(/\d{4}/)?.[0] || '0', 10);
-        return sortDirection === 'asc' ? aNum - bNum : bNum - aNum;
-      }
-
-      const comparison = aVal.localeCompare(bVal);
-      return sortDirection === 'asc' ? comparison : -comparison;
-    });
-  }, [filteredCredits, sortField, sortDirection]);
-
   // Display 12 by default, or all if expanded
-  const displayedCredits = isExpanded ? sortedCredits : sortedCredits.slice(0, 12);
+  const displayedCredits = isExpanded ? filteredCredits : filteredCredits.slice(0, 12);
 
   const filmCount = filmographyData.filter((p) => p.category === 'film').length;
   const tvCount = filmographyData.filter((p) => p.category === 'tv').length;
 
   return (
-    <section id="filmography" className="py-24 border-t border-zinc-800/60 bg-[#09090b] relative overflow-hidden">
-      <div className="container max-w-6xl mx-auto px-4 z-10 relative">
+    <section
+      id="filmography"
+      className="relative py-[80px] lg:py-[140px] border-b border-[var(--line)] bg-[var(--bg)]"
+    >
+      <div className="max-w-[1240px] mx-auto px-6">
         
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <div>
-            <span className="text-xs font-medium text-zinc-500 uppercase tracking-widest bg-zinc-900/90 px-3 py-1 rounded-full border border-zinc-800">
-              Verified Production Credits
+        {/* Asymmetric Section Header: Cols 1–5 heading, Cols 8–12 text */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 mb-12 items-end">
+          <div className="lg:col-span-5">
+            <span className="micro-label text-[var(--text-3)] block mb-3">
+              Production History
             </span>
-            <h2 className="text-3xl sm:text-5xl font-semibold tracking-tight mt-4 text-zinc-100">
+            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-[var(--text-1)] leading-none">
               Filmography
             </h2>
-            <p className="text-zinc-400 text-xs sm:text-sm font-light mt-2">
-              Complete record of {filmographyData.length} Hollywood feature films, television series & animation credits.
-            </p>
           </div>
+          
+          <div className="lg:col-span-7 lg:col-start-6 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+            <p className="text-[17px] leading-[1.65] text-[var(--text-2)] max-w-[48ch]">
+              Complete chronological record of 52 Hollywood feature films and episodic television series across major international facilities.
+            </p>
 
-          {/* Filter Tabs */}
-          <div className="inline-flex p-1 rounded-full bg-zinc-900/80 border border-zinc-800/80 self-start md:self-auto">
-            <button
-              onClick={() => setFilter('all')}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
-                filter === 'all'
-                  ? 'bg-zinc-800 text-white shadow-sm'
-                  : 'text-zinc-400 hover:text-zinc-200'
-              }`}
-            >
-              All ({filmographyData.length})
-            </button>
-            <button
-              onClick={() => setFilter('film')}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
-                filter === 'film'
-                  ? 'bg-zinc-800 text-white shadow-sm'
-                  : 'text-zinc-400 hover:text-zinc-200'
-              }`}
-            >
-              Feature Films ({filmCount})
-            </button>
-            <button
-              onClick={() => setFilter('tv')}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
-                filter === 'tv'
-                  ? 'bg-zinc-800 text-white shadow-sm'
-                  : 'text-zinc-400 hover:text-zinc-200'
-              }`}
-            >
-              TV & Series ({tvCount})
-            </button>
+            {/* Filter Tabs: ORANGE USE 3 OF 4 (Active filter tab) */}
+            <div className="flex items-center border border-[var(--line)] rounded-[var(--radius)] overflow-hidden shrink-0 self-start sm:self-auto">
+              <button
+                type="button"
+                onClick={() => setFilter('all')}
+                className={`micro-label px-3.5 py-2 transition-colors border-r border-[var(--line)] ${
+                  filter === 'all'
+                    ? 'text-[var(--text-1)] bg-[#121b27] border-b-2 border-b-[var(--accent)] font-semibold'
+                    : 'text-[var(--text-3)] hover:text-[var(--text-1)] bg-transparent'
+                }`}
+              >
+                All (52)
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setFilter('film')}
+                className={`micro-label px-3.5 py-2 transition-colors border-r border-[var(--line)] ${
+                  filter === 'film'
+                    ? 'text-[var(--text-1)] bg-[#121b27] border-b-2 border-b-[var(--accent)] font-semibold'
+                    : 'text-[var(--text-3)] hover:text-[var(--text-1)] bg-transparent'
+                }`}
+              >
+                Feature Films ({filmCount})
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setFilter('tv')}
+                className={`micro-label px-3.5 py-2 transition-colors ${
+                  filter === 'tv'
+                    ? 'text-[var(--text-1)] bg-[#121b27] border-b-2 border-b-[var(--accent)] font-semibold'
+                    : 'text-[var(--text-3)] hover:text-[var(--text-1)] bg-transparent'
+                }`}
+              >
+                TV & Animation ({tvCount})
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Compact Sortable Credits Table */}
-        <div className="double-bezel overflow-hidden">
-          <div className="double-bezel-inner p-2 sm:p-4 bg-zinc-950/70 overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[640px]">
-              <thead>
-                <tr className="border-b border-zinc-800/80 text-[11px] uppercase tracking-wider text-zinc-500 font-medium">
-                  <th
-                    onClick={() => handleSort('title')}
-                    className="py-3 px-4 cursor-pointer hover:text-zinc-300 transition-colors select-none"
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <span>Title</span>
-                      <ArrowUpDown className="w-3 h-3 opacity-60" />
-                    </div>
-                  </th>
-                  <th
-                    onClick={() => handleSort('role')}
-                    className="py-3 px-4 cursor-pointer hover:text-zinc-300 transition-colors select-none"
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <span>Role</span>
-                      <ArrowUpDown className="w-3 h-3 opacity-60" />
-                    </div>
-                  </th>
-                  <th
-                    onClick={() => handleSort('studio')}
-                    className="py-3 px-4 cursor-pointer hover:text-zinc-300 transition-colors select-none"
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <span>Studio</span>
-                      <ArrowUpDown className="w-3 h-3 opacity-60" />
-                    </div>
-                  </th>
-                  <th
-                    onClick={() => handleSort('year')}
-                    className="py-3 px-4 cursor-pointer hover:text-zinc-300 transition-colors select-none"
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <span>Year</span>
-                      <ArrowUpDown className="w-3 h-3 opacity-60" />
-                    </div>
-                  </th>
-                  <th className="py-3 px-4 text-right">Type</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-900/90 text-xs sm:text-sm font-light">
-                {displayedCredits.map((credit) => {
-                  const hasContribution = credit.contribution !== undefined;
-                  const isRowExpanded = Boolean(expandedContributions[credit.id]);
+        {/* Desktop / Tablet 5-Column Table (>= 768px) */}
+        <div className="hidden md:block border border-[var(--line)] rounded-[var(--radius)] overflow-hidden">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-[var(--line)] bg-[#0c121c] micro-label text-[10px] text-[var(--text-3)]">
+                <th className="py-3 px-4 w-[34%] font-normal">Title</th>
+                <th className="py-3 px-4 w-[24%] font-normal">Role</th>
+                <th className="py-3 px-4 w-[18%] font-normal">Studio</th>
+                <th className="py-3 px-4 w-[12%] font-normal tabular-nums">Year</th>
+                <th className="py-3 px-4 w-[12%] text-right font-normal">Type</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[var(--line)] text-sm">
+              {displayedCredits.map((credit) => {
+                const hasContribution = credit.contribution !== undefined;
+                const isRowExpanded = Boolean(expandedContributions[credit.id]);
 
-                  return (
-                    <tr
-                      key={credit.id}
-                      className="hover:bg-zinc-900/40 transition-colors group"
-                    >
-                      {/* Title & Highlights & Contribution toggle */}
-                      <td className="py-3.5 px-4">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-zinc-100 font-medium">
-                            {credit.title}
-                          </span>
-
-                          {credit.highlight && (
-                            <span className="inline-block text-[10px] font-medium text-zinc-300 bg-zinc-900 border border-zinc-700/60 px-2 py-0.5 rounded">
-                              {credit.highlight}
+                return (
+                  <tr
+                    key={credit.id}
+                    className="hover:bg-[#0e1724]/40 transition-colors"
+                  >
+                    <td className="py-3.5 px-4" colSpan={5}>
+                      <div className="grid grid-cols-12 items-center gap-2">
+                        {/* Title & Plain-Text Award Callout */}
+                        <div className="col-span-4 flex flex-col items-start pr-2">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-semibold text-[var(--text-1)] leading-snug">
+                              {credit.title}
                             </span>
-                          )}
+                            {/* Award callouts become plain text */}
+                            {credit.highlight && (
+                              <span className="micro-label text-[9px] text-[var(--text-3)] font-normal lowercase tracking-normal">
+                                · {credit.highlight}
+                              </span>
+                            )}
+                          </div>
 
+                          {/* Ownership toggle button if show has contribution field */}
                           {hasContribution && (
                             <button
+                              type="button"
                               onClick={() => toggleContribution(credit.id)}
-                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors"
-                              title="Toggle ownership & contribution detail"
+                              className="micro-label text-[9px] mt-1 text-[var(--text-3)] hover:text-[var(--text-1)] flex items-center gap-1 transition-colors"
                             >
-                              <Info className="w-2.5 h-2.5" />
-                              <span>{isRowExpanded ? 'Hide ownership' : 'Ownership detail'}</span>
                               <ChevronRight
                                 className={`w-2.5 h-2.5 transition-transform ${
                                   isRowExpanded ? 'rotate-90' : ''
                                 }`}
                               />
+                              <span>{isRowExpanded ? 'Hide ownership' : 'Ownership detail'}</span>
                             </button>
                           )}
                         </div>
 
-                        {/* Expandable Contribution Row Detail for Key Shows */}
-                        {hasContribution && isRowExpanded && (
-                          <div className="mt-2.5 p-3 rounded-lg bg-zinc-900/70 border border-zinc-800/80 text-xs text-zinc-300">
-                            <span className="font-semibold text-zinc-200 mr-1.5">
-                              Contribution & Ownership:
-                            </span>
-                            {credit.contribution ? (
-                              <span>{credit.contribution}</span>
-                            ) : (
-                              <span className="text-zinc-500 italic">
-                                [TODO: Ownership detail to be added for {credit.title}]
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </td>
+                        {/* Role */}
+                        <div className="col-span-3 text-[var(--text-2)] text-xs truncate">
+                          {credit.role}
+                        </div>
 
-                      {/* Role */}
-                      <td className="py-3.5 px-4 text-zinc-300">
-                        {credit.role}
-                      </td>
+                        {/* Studio */}
+                        <div className="col-span-2 text-[var(--text-3)] text-xs truncate">
+                          {credit.studio}
+                        </div>
 
-                      {/* Studio */}
-                      <td className="py-3.5 px-4 text-zinc-400">
-                        {credit.studio}
-                      </td>
+                        {/* Year (Tabular-nums) */}
+                        <div className="col-span-2 text-[var(--text-2)] text-xs tabular-nums font-mono">
+                          {credit.year}
+                        </div>
 
-                      {/* Year */}
-                      <td className="py-3.5 px-4 text-zinc-400 font-mono text-xs">
-                        {credit.year}
-                      </td>
+                        {/* Type */}
+                        <div className="col-span-1 text-right">
+                          <span className="micro-label text-[9px] text-[var(--text-3)]">
+                            {credit.category === 'film' ? 'Film' : 'Series'}
+                          </span>
+                        </div>
+                      </div>
 
-                      {/* Type Badge */}
-                      <td className="py-3.5 px-4 text-right">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wide bg-zinc-900 border border-zinc-800 text-zinc-400">
-                          {credit.category === 'film' ? 'Film' : 'Series'}
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                      {/* Expandable Contribution Row for Key Shows */}
+                      {hasContribution && isRowExpanded && (
+                        <div className="mt-3 p-3 border border-[var(--line)] bg-[#090d14] rounded-[var(--radius)] text-xs">
+                          <span className="micro-label text-[9px] text-[var(--text-3)] block mb-1">
+                            Supervisory & Craft Ownership
+                          </span>
+                          {credit.contribution ? (
+                            <p className="text-[var(--text-2)] leading-relaxed">{credit.contribution}</p>
+                          ) : (
+                            <p className="text-[var(--text-3)] italic font-mono">
+                              [ TODO: Add contribution detail for {credit.title} ]
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
 
-        {/* Expander Button: Show all 52 credits / Show fewer */}
-        {sortedCredits.length > 12 && (
-          <div className="mt-6 flex justify-center">
-            <button
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 text-xs font-medium text-zinc-300 hover:text-white transition-all shadow-sm"
-            >
-              {isExpanded ? (
-                <>
-                  <span>Show fewer (12 credits)</span>
-                  <ChevronUp className="w-3.5 h-3.5 text-zinc-400" />
-                </>
-              ) : (
-                <>
-                  <span>Show all {sortedCredits.length} credits</span>
-                  <ChevronDown className="w-3.5 h-3.5 text-zinc-400" />
-                </>
-              )}
-            </button>
-          </div>
-        )}
+        {/* Mobile Stacked Rows (< 768px, specifically tuned for 375px) */}
+        <div className="md:hidden flex flex-col divide-y divide-[var(--line)] border border-[var(--line)] rounded-[var(--radius)] overflow-hidden">
+          {displayedCredits.map((credit) => {
+            const hasContribution = credit.contribution !== undefined;
+            const isRowExpanded = Boolean(expandedContributions[credit.id]);
 
-        {/* IMDb Link Callout */}
-        <div className="mt-14 text-center">
+            return (
+              <div key={credit.id} className="p-4 bg-[var(--bg)] flex flex-col gap-1.5">
+                {/* Top: Title + Type */}
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1">
+                    <span className="font-semibold text-sm text-[var(--text-1)] leading-tight block">
+                      {credit.title}
+                    </span>
+                    {/* Award plain text */}
+                    {credit.highlight && (
+                      <span className="micro-label text-[9px] text-[var(--text-3)] font-normal tracking-normal lowercase block mt-0.5">
+                        · {credit.highlight}
+                      </span>
+                    )}
+                  </div>
+                  <span className="micro-label text-[9px] text-[var(--text-3)] shrink-0 px-1.5 py-0.5 border border-[var(--line)]">
+                    {credit.category === 'film' ? 'Film' : 'Series'}
+                  </span>
+                </div>
+
+                {/* Subline: Role */}
+                <div className="text-xs text-[var(--text-2)]">
+                  {credit.role}
+                </div>
+
+                {/* Meta: Studio · Year */}
+                <div className="flex items-center justify-between text-xs text-[var(--text-3)] pt-1">
+                  <span>{credit.studio}</span>
+                  <span className="tabular-nums font-mono">{credit.year}</span>
+                </div>
+
+                {/* Optional Contribution Toggle Button */}
+                {hasContribution && (
+                  <div className="pt-1">
+                    <button
+                      type="button"
+                      onClick={() => toggleContribution(credit.id)}
+                      className="micro-label text-[9px] text-[var(--text-3)] hover:text-[var(--text-1)] flex items-center gap-1 transition-colors"
+                    >
+                      <ChevronRight
+                        className={`w-2.5 h-2.5 transition-transform ${
+                          isRowExpanded ? 'rotate-90' : ''
+                        }`}
+                      />
+                      <span>{isRowExpanded ? 'Hide ownership' : 'Ownership detail'}</span>
+                    </button>
+
+                    {isRowExpanded && (
+                      <div className="mt-2 p-2.5 border border-[var(--line)] bg-[#090d14] rounded-[var(--radius)] text-xs">
+                        <span className="micro-label text-[8px] text-[var(--text-3)] block mb-1">
+                          Ownership Detail
+                        </span>
+                        {credit.contribution ? (
+                          <p className="text-[var(--text-2)] text-[11px] leading-relaxed">
+                            {credit.contribution}
+                          </p>
+                        ) : (
+                          <p className="text-[var(--text-3)] italic font-mono text-[11px]">
+                            [ TODO: Add contribution detail for {credit.title} ]
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Expander: "Show all 52 credits" */}
+        <div className="mt-8 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="micro-label px-5 py-2.5 border border-[var(--line)] hover:border-[var(--line-strong)] text-[var(--text-2)] hover:text-[var(--text-1)] bg-transparent rounded-[var(--radius)] transition-colors flex items-center gap-2"
+          >
+            {isExpanded ? (
+              <>
+                <span>Show Fewer (12 Credits)</span>
+                <ChevronUp className="w-3.5 h-3.5" />
+              </>
+            ) : (
+              <>
+                <span>Show All 52 Credits</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* External Link: IMDb */}
+        <div className="mt-12 text-center">
           <a
             href="https://www.imdb.com/name/nm6199377/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-xs font-medium text-zinc-300 hover:text-white bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 px-6 py-3 rounded-full transition-all"
+            className="micro-label text-[10px] text-[var(--text-3)] hover:text-[var(--text-1)] inline-flex items-center gap-1.5 transition-colors"
           >
-            <span>Complete IMDb Profile (52 Verified Credits)</span>
-            <ExternalLink className="w-3.5 h-3.5 text-zinc-500" />
+            <span>Verify Complete 52 Filmography Credits on IMDb</span>
+            <ExternalLink className="w-3 h-3" />
           </a>
         </div>
 

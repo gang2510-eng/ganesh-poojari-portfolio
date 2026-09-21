@@ -1,58 +1,63 @@
 'use client';
 
-import { GraduationCap, Award } from 'lucide-react';
-
 export default function Skills() {
   const coreSkills = [
     'Modeling Supervisor',
     'Asset Supervisor',
     'Modeling Lead',
-    'Senior 3D Artist',
+    'Senior 3D Modeler',
     'Creature Modeling',
-    'Character Modeling',
-    'Environment Modeling',
-    'Hard-Surface Assets',
-    'Team Supervision',
-    'Quality Control & Reviews',
+    'Character Topology',
+    'Environment Architecture',
+    'Hard-Surface Vehicles',
+    'Department Supervision',
+    'Quality Control & Dailies Reviews',
     'VFX Pipeline Handoff',
     'Cross-Department Coordination',
-    'Asset Planning',
-    'Hero Asset Development',
+    'UDIM & Texture Budgeting',
+    'CAD & Scan Data Cleanup',
+    'Facial Blendshape Topology',
+    'ZBrush High-Frequency Detailing',
   ];
 
   return (
-    <section id="skills" className="py-24 border-t border-zinc-800/60 bg-[#09090b] relative overflow-hidden">
-      {/* Background Artwork Layer (Ganesh's Real ArtStation 3D Skin Test Render) */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.05]">
-        <img
-          src="/artwork/artstation_4.jpg"
-          alt="Ganesh Poojari ArtStation 3D Skin Test"
-          className="w-full h-full object-cover object-center filter grayscale scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#09090b]/80 via-[#09090b]/90 to-[#09090b]" />
-      </div>
-
-      <div className="container max-w-6xl mx-auto px-4 z-10 relative">
+    <section
+      id="skills"
+      className="relative py-[80px] lg:py-[140px] border-b border-[var(--line)] bg-[var(--bg)]"
+    >
+      <div className="max-w-[1240px] mx-auto px-6">
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
-          {/* Left Column - Core Skills Chips */}
-          <div className="lg:col-span-7">
-            <span className="text-xs font-medium text-zinc-500 uppercase tracking-widest bg-zinc-900/90 px-3 py-1 rounded-full border border-zinc-800">
-              Technical & Supervisory Domain
+        {/* Asymmetric Section Header */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 mb-16 items-end">
+          <div className="lg:col-span-5">
+            <span className="micro-label text-[var(--text-3)] block mb-3">
+              Domain & Technical Capabilities
             </span>
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mt-4 mb-4 text-zinc-100">
-              Core Competencies
+            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-[var(--text-1)] leading-none">
+              Capabilities
             </h2>
-            <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed mb-8">
-              Combining high-end artistic craftsmanship with technical pipeline discipline across major film visual effects studios.
+          </div>
+          <div className="lg:col-span-7 lg:col-start-6">
+            <p className="text-[17px] leading-[1.65] text-[var(--text-2)] max-w-[68ch]">
+              Artistic anatomy and engineering precision balanced with supervisory discipline across large-scale feature film production pipelines.
             </p>
+          </div>
+        </div>
 
-            <div className="flex flex-wrap gap-2">
+        {/* 12-Col Grid: Left Competencies, Right Education & Background */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+          
+          {/* Core Competencies Tags (Cols 1–7) */}
+          <div className="lg:col-span-7 flex flex-col gap-6">
+            <span className="micro-label text-[10px] text-[var(--text-3)]">
+              Core Competencies & Pipeline Roles
+            </span>
+
+            <div className="flex flex-wrap gap-2.5">
               {coreSkills.map((skill, index) => (
                 <span
                   key={index}
-                  className="px-3.5 py-1.5 rounded-full bg-zinc-900/80 border border-zinc-800/80 text-zinc-300 text-xs font-medium hover:border-zinc-700 hover:text-white transition-colors cursor-default"
+                  className="micro-label px-3.5 py-2 border border-[var(--line)] hover:border-[var(--line-strong)] text-[var(--text-2)] hover:text-[var(--text-1)] rounded-[var(--radius)] bg-transparent transition-colors cursor-default"
                 >
                   {skill}
                 </span>
@@ -60,34 +65,35 @@ export default function Skills() {
             </div>
           </div>
 
-          {/* Right Column - Education & Background */}
-          <div className="lg:col-span-5">
-            <div className="double-bezel">
-              <div className="double-bezel-inner p-6 sm:p-7">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400">
-                    <GraduationCap className="w-4 h-4" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-zinc-100">Education</h3>
-                </div>
+          {/* Education & Credentials (Cols 8–12) */}
+          <div className="lg:col-span-5 border border-[var(--line)] rounded-[var(--radius)] p-6 sm:p-8 bg-transparent">
+            <span className="micro-label text-[10px] text-[var(--text-3)] block mb-6">
+              Education & Verified History
+            </span>
 
-                <div className="space-y-5">
-                  <div className="border-l-2 border-zinc-600 pl-4 py-0.5">
-                    <h4 className="text-sm font-semibold text-zinc-100">Bachelor of Commerce (B.Com)</h4>
-                    <p className="text-xs text-zinc-400 font-light mt-0.5">South Indian Welfare Society (SIWS) College</p>
-                  </div>
-
-                  <div className="border-l-2 border-zinc-800 pl-4 py-0.5">
-                    <h4 className="text-sm font-semibold text-zinc-100">High School Certificate</h4>
-                    <p className="text-xs text-zinc-400 font-light mt-0.5">The Dadar Parsee Youths Assembly High School (1999 – 2000)</p>
-                  </div>
-                </div>
-
-                <div className="mt-8 pt-5 border-t border-zinc-800/80 flex items-center gap-2.5 text-xs text-zinc-400">
-                  <Award className="w-4 h-4 text-zinc-400" />
-                  <span>20+ Years of Verified VFX Industry Production Credits</span>
-                </div>
+            <div className="space-y-6">
+              <div className="border-l border-[var(--line-strong)] pl-4 py-0.5">
+                <h4 className="text-sm font-semibold text-[var(--text-1)]">
+                  Bachelor of Commerce (B.Com)
+                </h4>
+                <p className="micro-label text-[10px] text-[var(--text-3)] mt-1">
+                  South Indian Welfare Society (SIWS) College
+                </p>
               </div>
+
+              <div className="border-l border-[var(--line)] pl-4 py-0.5">
+                <h4 className="text-sm font-semibold text-[var(--text-1)]">
+                  High School Certificate
+                </h4>
+                <p className="micro-label text-[10px] text-[var(--text-3)] mt-1">
+                  The Dadar Parsee Youths Assembly High School (1999 – 2000)
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-[var(--line)] flex items-center justify-between micro-label text-[10px] text-[var(--text-3)]">
+              <span>Production Experience</span>
+              <span className="text-[var(--text-2)] tabular-nums">2006 – Present</span>
             </div>
           </div>
 
