@@ -1,13 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { Layers, ArrowUpRight, Box } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { selectedWorkData, SelectedWorkItem } from '@/data/selectedWork';
 import WorkDetailModal from './WorkDetailModal';
+
+type ViewMode = 'beauty' | 'wireframe' | 'topology';
 
 export default function SelectedWork() {
   const [selectedItem, setSelectedItem] = useState<SelectedWorkItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // Track active preview mode per card: defaults to 'beauty'
+  const [activeCardViews, setActiveCardViews] = useState<Record<string, ViewMode>>({});
 
   const handleOpenDetail = (item: SelectedWorkItem) => {
     setSelectedItem(item);
@@ -18,114 +22,161 @@ export default function SelectedWork() {
     setIsModalOpen(false);
   };
 
+  const handleCardViewChange = (e: React.MouseEvent, itemId: string, mode: ViewMode) => {
+    e.stopPropagation();
+    setActiveCardViews((prev) => ({
+      ...prev,
+      [itemId]: mode,
+    }));
+  };
+
   return (
-    <section id="work" className="py-24 border-t border-zinc-800/60 bg-[#09090b] relative overflow-hidden">
-      <div className="container max-w-6xl mx-auto px-4 z-10 relative">
+    <section
+      id="work"
+      className="relative py-[80px] lg:py-[140px] border-b border-[var(--line-blue)] bg-[var(--bg-blue)]"
+    >
+      <div className="max-w-[1240px] mx-auto px-6">
         
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
-          <div>
-            <span className="text-xs font-medium text-zinc-500 uppercase tracking-widest bg-zinc-900/90 px-3 py-1 rounded-full border border-zinc-800">
-              Craft & Supervisory Portfolio
+        {/* Asymmetric Section Header: Cols 1–5 heading, Cols 8–12 supporting text */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 mb-16 items-end">
+          <div className="lg:col-span-5">
+            <span className="micro-label text-[var(--text-3)] block mb-3">
+              Craft & Supervision
             </span>
-            <h2 className="text-3xl sm:text-5xl font-semibold tracking-tight mt-4 text-zinc-100">
+            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-[var(--text-1)] leading-none">
               Selected Work
             </h2>
-            <p className="text-zinc-400 text-xs sm:text-sm font-light mt-2 max-w-2xl">
-              3D asset supervision, hero character/creature modeling, and topological breakdowns across feature film VFX pipelines.
-            </p>
           </div>
-
-          <div className="text-xs text-zinc-500 font-mono hidden md:block">
-            Showing 6 Selected Assets • Click Card for Wireframe & Breakdown
+          <div className="lg:col-span-7 lg:col-start-6">
+            <p className="text-[17px] leading-[1.65] text-[var(--text-2)] max-w-[68ch]">
+              High-frequency creature sculpting, character topology pipelines, hard-surface mechanical builds, and production handoffs across feature film VFX departments.
+            </p>
           </div>
         </div>
 
-        {/* 6-Card Responsive Grid (3 cols desktop, 2 tablet, 1 mobile) */}
+        {/* 6-Card Grid: 3 cols desktop / 2 tablet / 1 mobile */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {selectedWorkData.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => handleOpenDetail(item)}
-              className="double-bezel group cursor-pointer transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className="double-bezel-inner p-3.5 h-full flex flex-col justify-between relative overflow-hidden bg-zinc-950/70">
-                
-                {/* Beauty Render Preview Container */}
-                <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800/80 mb-3.5 flex items-center justify-center">
-                  <img
-                    src={item.images.beauty}
-                    alt={item.title}
-                    width={600}
-                    height={375}
-                    loading="lazy"
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      target.style.display = 'none';
-                      if (target.parentElement) {
-                        const fallback = target.parentElement.querySelector('.card-fallback');
-                        if (fallback) fallback.classList.remove('hidden');
-                      }
-                    }}
-                  />
+          {selectedWorkData.map((item) => {
+            const currentMode: ViewMode = activeCardViews[item.id] || 'beauty';
+            
+            // Get active image for the card
+            let currentImageSrc = item.images.beauty;
+            if (currentMode === 'wireframe' && item.images.wireframe) {
+              currentImageSrc = item.images.wireframe;
+            } else if (currentMode === 'topology' && item.images.topology) {
+              currentImageSrc = item.images.topology;
+            }
 
-                  {/* Fallback Display if placeholder file is pending upload */}
-                  <div className="card-fallback hidden absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-zinc-950/95">
-                    <Box className="w-8 h-8 text-zinc-600 mb-2" />
-                    <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
-                      BEAUTY RENDER PLACEHOLDER
-                    </span>
-                    <span className="text-[9px] text-zinc-600 font-mono mt-0.5 truncate max-w-full px-2">
-                      {item.images.beauty}
-                    </span>
+            const hasWireframe = Boolean(item.images.wireframe);
+            const hasTopology = Boolean(item.images.topology);
+
+            return (
+              <article
+                key={item.id}
+                onClick={() => handleOpenDetail(item)}
+                className="group border border-[var(--line-blue)] hover:border-[var(--line-strong)] bg-transparent rounded-[var(--radius)] transition-colors cursor-pointer flex flex-col justify-between overflow-hidden"
+              >
+                <div>
+                  {/* 1. Flush Preview Image */}
+                  <div className="relative aspect-[16/10] w-full border-b border-[var(--line-blue)] bg-[#0c1622] overflow-hidden flex items-center justify-center">
+                    <img
+                      src={currentImageSrc}
+                      alt={`${item.title} — ${currentMode}`}
+                      width={600}
+                      height={375}
+                      loading="lazy"
+                      className="w-full h-full object-cover object-center"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        target.style.display = 'none';
+                        const fallback = target.parentElement?.querySelector('.card-fallback');
+                        if (fallback) fallback.classList.remove('hidden');
+                      }}
+                    />
+
+                    {/* Placeholder fallback message */}
+                    <div className="card-fallback hidden absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-[#0d1724]">
+                      <span className="micro-label text-[9px] text-[var(--text-3)] mb-1">
+                        RENDER PLACEHOLDER
+                      </span>
+                      <span className="micro-label text-[10px] text-[var(--text-2)] font-mono truncate max-w-full">
+                        {currentImageSrc}
+                      </span>
+                    </div>
+
+                    {/* Inspection Hint */}
+                    <div className="absolute top-2.5 right-2.5 p-1 border border-[var(--line-blue)] bg-[var(--bg-blue)] text-[var(--text-3)] group-hover:text-[var(--text-1)] group-hover:border-[var(--line-strong)] rounded-[var(--radius)] opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </div>
                   </div>
 
-                  {/* Gradient Vignette Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+                  {/* 2. BEAUTY | WIRE | TOPO View Switcher Row beneath image */}
+                  <div className="flex items-center divide-x divide-[var(--line-blue)] border-b border-[var(--line-blue)] bg-[var(--bg-blue)]">
+                    <button
+                      type="button"
+                      onClick={(e) => handleCardViewChange(e, item.id, 'beauty')}
+                      className={`micro-label px-3 py-1.5 flex-1 text-center transition-colors ${
+                        currentMode === 'beauty'
+                          ? 'text-[var(--text-1)] bg-[var(--line-blue)]/50 font-medium'
+                          : 'text-[var(--text-3)] hover:text-[var(--text-2)]'
+                      }`}
+                    >
+                      BEAUTY
+                    </button>
 
-                  {/* Asset Type Badge Top Left */}
-                  <div className="absolute top-2.5 left-2.5">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-medium tracking-wide bg-zinc-950/85 backdrop-blur-md text-zinc-300 border border-zinc-800">
-                      <Layers className="w-2.5 h-2.5 text-zinc-400" />
+                    {hasWireframe && (
+                      <button
+                        type="button"
+                        onClick={(e) => handleCardViewChange(e, item.id, 'wireframe')}
+                        className={`micro-label px-3 py-1.5 flex-1 text-center transition-colors ${
+                          currentMode === 'wireframe'
+                            ? 'text-[var(--text-1)] bg-[var(--line-blue)]/50 font-medium'
+                            : 'text-[var(--text-3)] hover:text-[var(--text-2)]'
+                        }`}
+                      >
+                        WIRE
+                      </button>
+                    )}
+
+                    {hasTopology && (
+                      <button
+                        type="button"
+                        onClick={(e) => handleCardViewChange(e, item.id, 'topology')}
+                        className={`micro-label px-3 py-1.5 flex-1 text-center transition-colors ${
+                          currentMode === 'topology'
+                            ? 'text-[var(--text-1)] bg-[var(--line-blue)]/50 font-medium'
+                            : 'text-[var(--text-3)] hover:text-[var(--text-2)]'
+                        }`}
+                      >
+                        TOPO
+                      </button>
+                    )}
+                  </div>
+
+                  {/* 3. Card Meta: assetType label, title, show · studio · year */}
+                  <div className="p-4 flex flex-col gap-1.5">
+                    <span className="micro-label text-[10px] text-[var(--text-3)]">
                       {item.assetType}
                     </span>
+                    <h3 className="text-base font-semibold text-[var(--text-1)] leading-snug group-hover:text-white transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-[var(--text-2)] mt-0.5">
+                      {item.show} <span className="text-[var(--text-3)]">·</span> {item.studio} <span className="text-[var(--text-3)]">·</span> <span className="tabular-nums">{item.year}</span>
+                    </p>
                   </div>
-
-                  {/* Inspection Trigger Icon Top Right */}
-                  <div className="absolute top-2.5 right-2.5 w-6 h-6 rounded-md bg-zinc-950/80 backdrop-blur-md border border-zinc-800 flex items-center justify-center text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
-
-                  {/* Wireframe indicator if available */}
-                  {item.images.wireframe && (
-                    <div className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded bg-black/80 backdrop-blur-md border border-zinc-800 text-[9px] font-mono text-zinc-400">
-                      + Wireframe
-                    </div>
-                  )}
                 </div>
 
-                {/* Card Information */}
-                <div>
-                  <h3 className="text-base font-semibold text-zinc-100 leading-snug group-hover:text-white transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-zinc-400 font-light mt-1">
-                    {item.show} • <span className="text-zinc-500">{item.studio}</span> • <span className="text-zinc-500">{item.year}</span>
-                  </p>
-                </div>
-
-                {/* Card Subline / Role */}
-                <div className="pt-3 mt-3 border-t border-zinc-800/60 flex items-center justify-between text-[11px] text-zinc-500">
-                  <span>Role: <strong className="text-zinc-300 font-medium">{item.role}</strong></span>
-                  <span className="text-zinc-400 group-hover:text-zinc-200 transition-colors flex items-center gap-0.5">
-                    Details <ArrowUpRight className="w-3 h-3 inline" />
+                {/* Card footer detail row */}
+                <div className="px-4 py-2.5 border-t border-[var(--line-blue)] flex items-center justify-between micro-label text-[10px]">
+                  <span className="text-[var(--text-3)]">Breakdown & Specs</span>
+                  <span className="text-[var(--text-2)] group-hover:text-[var(--text-1)] flex items-center gap-1">
+                    Inspect ↗
                   </span>
                 </div>
-
-              </div>
-            </div>
-          ))}
+              </article>
+            );
+          })}
         </div>
 
       </div>
