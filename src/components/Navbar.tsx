@@ -7,8 +7,8 @@ import { Menu, X, Play } from 'lucide-react';
 import ShowreelModal from './ShowreelModal';
 
 const NAV_ITEMS = [
-  { id: 'work', label: 'Work', href: '/work' },
   { id: 'about', label: 'About', href: '/about' },
+  { id: 'work', label: 'Work', href: '/work' },
   { id: 'experience', label: 'Experience', href: '/experience' },
   { id: 'filmography', label: 'Filmography', href: '/filmography' },
   { id: 'skills', label: 'Skills', href: '/skills' },

@@ -96,16 +96,16 @@ export default function Filmography() {
           </div>
         </div>
 
-        {/* Desktop / Tablet 5-Column Table (>= 768px) */}
+        {/* Desktop / Tablet 5-Column Table with Poster Thumbnails (>= 768px) */}
         <div className="hidden md:block border border-[var(--line)] rounded-[var(--radius)] overflow-hidden">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-[var(--line)] bg-[#0c121c] micro-label text-[10px] text-[var(--text-3)]">
-                <th className="py-3 px-4 w-[34%] font-normal">Title</th>
+                <th className="py-3 px-4 w-[38%] font-normal">Title</th>
                 <th className="py-3 px-4 w-[24%] font-normal">Role</th>
-                <th className="py-3 px-4 w-[18%] font-normal">Studio</th>
-                <th className="py-3 px-4 w-[12%] font-normal tabular-nums">Year</th>
-                <th className="py-3 px-4 w-[12%] text-right font-normal">Type</th>
+                <th className="py-3 px-4 w-[16%] font-normal">Studio</th>
+                <th className="py-3 px-4 w-[11%] font-normal tabular-nums">Year</th>
+                <th className="py-3 px-4 w-[11%] text-right font-normal">Type</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--line)] text-sm">
@@ -118,37 +118,59 @@ export default function Filmography() {
                     key={credit.id}
                     className="hover:bg-[#0e1724]/40 transition-colors"
                   >
-                    <td className="py-3.5 px-4" colSpan={5}>
-                      <div className="grid grid-cols-12 items-center gap-2">
-                        {/* Title & Plain-Text Award Callout */}
-                        <div className="col-span-4 flex flex-col items-start pr-2">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="font-semibold text-[var(--text-1)] leading-snug">
-                              {credit.title}
-                            </span>
-                            {/* Award callouts become plain text */}
-                            {credit.highlight && (
-                              <span className="micro-label text-[9px] text-[var(--text-3)] font-normal lowercase tracking-normal">
-                                · {credit.highlight}
-                              </span>
-                            )}
+                    <td className="py-3 px-4" colSpan={5}>
+                      <div className="grid grid-cols-12 items-center gap-3">
+                        {/* Title Column with Poster Thumbnail */}
+                        <div className="col-span-5 flex items-center gap-3 pr-2 min-w-0">
+                          {/* Poster Thumbnail */}
+                          <div className="w-9 h-[54px] shrink-0 bg-[#0c121c] border border-[var(--line)] rounded-[var(--radius)] overflow-hidden flex items-center justify-center">
+                            <img
+                              src={`/posters/${credit.id}.jpg`}
+                              alt={credit.title}
+                              width={36}
+                              height={54}
+                              loading="lazy"
+                              className="w-full h-full object-cover object-center"
+                              onError={(e) => {
+                                const target = e.currentTarget;
+                                target.style.display = 'none';
+                                if (target.parentElement) {
+                                  target.parentElement.classList.add('hidden');
+                                }
+                              }}
+                            />
                           </div>
 
-                          {/* Ownership toggle button if show has contribution field */}
-                          {hasContribution && (
-                            <button
-                              type="button"
-                              onClick={() => toggleContribution(credit.id)}
-                              className="micro-label text-[9px] mt-1 text-[var(--text-3)] hover:text-[var(--text-1)] flex items-center gap-1 transition-colors"
-                            >
-                              <ChevronRight
-                                className={`w-2.5 h-2.5 transition-transform ${
-                                  isRowExpanded ? 'rotate-90' : ''
-                                }`}
-                              />
-                              <span>{isRowExpanded ? 'Hide ownership' : 'Ownership detail'}</span>
-                            </button>
-                          )}
+                          {/* Title text and metadata */}
+                          <div className="flex flex-col items-start min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="font-semibold text-[var(--text-1)] leading-snug">
+                                {credit.title}
+                              </span>
+                              {/* Award callouts become plain text */}
+                              {credit.highlight && (
+                                <span className="micro-label text-[9px] text-[var(--text-3)] font-normal lowercase tracking-normal">
+                                  · {credit.highlight}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Ownership toggle button if show has contribution field */}
+                            {hasContribution && (
+                              <button
+                                type="button"
+                                onClick={() => toggleContribution(credit.id)}
+                                className="micro-label text-[9px] mt-1 text-[var(--text-3)] hover:text-[var(--text-1)] flex items-center gap-1 transition-colors"
+                              >
+                                <ChevronRight
+                                  className={`w-2.5 h-2.5 transition-transform ${
+                                    isRowExpanded ? 'rotate-90' : ''
+                                  }`}
+                                />
+                                <span>{isRowExpanded ? 'Hide ownership' : 'Ownership detail'}</span>
+                              </button>
+                            )}
+                          </div>
                         </div>
 
                         {/* Role */}
@@ -162,7 +184,7 @@ export default function Filmography() {
                         </div>
 
                         {/* Year (Tabular-nums) */}
-                        <div className="col-span-2 text-[var(--text-2)] text-xs tabular-nums font-mono">
+                        <div className="col-span-1 text-[var(--text-2)] text-xs tabular-nums font-mono">
                           {credit.year}
                         </div>
 
@@ -197,77 +219,95 @@ export default function Filmography() {
           </table>
         </div>
 
-        {/* Mobile Stacked Rows (< 768px, specifically tuned for 375px) */}
+        {/* Mobile Stacked Rows with Poster Thumbnails (< 768px, tuned for 375px) */}
         <div className="md:hidden flex flex-col divide-y divide-[var(--line)] border border-[var(--line)] rounded-[var(--radius)] overflow-hidden">
           {displayedCredits.map((credit) => {
             const hasContribution = credit.contribution !== undefined;
             const isRowExpanded = Boolean(expandedContributions[credit.id]);
 
             return (
-              <div key={credit.id} className="p-4 bg-[var(--bg)] flex flex-col gap-1.5">
-                {/* Top: Title + Type */}
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex-1">
-                    <span className="font-semibold text-sm text-[var(--text-1)] leading-tight block">
-                      {credit.title}
-                    </span>
-                    {/* Award plain text */}
-                    {credit.highlight && (
-                      <span className="micro-label text-[9px] text-[var(--text-3)] font-normal tracking-normal lowercase block mt-0.5">
-                        · {credit.highlight}
+              <div key={credit.id} className="p-3.5 bg-[var(--bg)] flex items-start gap-3">
+                {/* Poster Thumbnail */}
+                <div className="w-12 h-[72px] shrink-0 bg-[#0c121c] border border-[var(--line)] rounded-[var(--radius)] overflow-hidden flex items-center justify-center">
+                  <img
+                    src={`/posters/${credit.id}.jpg`}
+                    alt={credit.title}
+                    width={48}
+                    height={72}
+                    loading="lazy"
+                    className="w-full h-full object-cover object-center"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      target.style.display = 'none';
+                      if (target.parentElement) {
+                        target.parentElement.classList.add('hidden');
+                      }
+                    }}
+                  />
+                </div>
+
+                {/* Content Block */}
+                <div className="flex-1 min-w-0 flex flex-col gap-1">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0">
+                      <span className="font-semibold text-sm text-[var(--text-1)] leading-tight block truncate">
+                        {credit.title}
                       </span>
-                    )}
-                  </div>
-                  <span className="micro-label text-[9px] text-[var(--text-3)] shrink-0 px-1.5 py-0.5 border border-[var(--line)]">
-                    {credit.category === 'film' ? 'Film' : 'Series'}
-                  </span>
-                </div>
-
-                {/* Subline: Role */}
-                <div className="text-xs text-[var(--text-2)]">
-                  {credit.role}
-                </div>
-
-                {/* Meta: Studio · Year */}
-                <div className="flex items-center justify-between text-xs text-[var(--text-3)] pt-1">
-                  <span>{credit.studio}</span>
-                  <span className="tabular-nums font-mono">{credit.year}</span>
-                </div>
-
-                {/* Optional Contribution Toggle Button */}
-                {hasContribution && (
-                  <div className="pt-1">
-                    <button
-                      type="button"
-                      onClick={() => toggleContribution(credit.id)}
-                      className="micro-label text-[9px] text-[var(--text-3)] hover:text-[var(--text-1)] flex items-center gap-1 transition-colors"
-                    >
-                      <ChevronRight
-                        className={`w-2.5 h-2.5 transition-transform ${
-                          isRowExpanded ? 'rotate-90' : ''
-                        }`}
-                      />
-                      <span>{isRowExpanded ? 'Hide ownership' : 'Ownership detail'}</span>
-                    </button>
-
-                    {isRowExpanded && (
-                      <div className="mt-2 p-2.5 border border-[var(--line)] bg-[#090d14] rounded-[var(--radius)] text-xs">
-                        <span className="micro-label text-[8px] text-[var(--text-3)] block mb-1">
-                          Ownership Detail
+                      {credit.highlight && (
+                        <span className="micro-label text-[9px] text-[var(--text-3)] font-normal tracking-normal lowercase block mt-0.5">
+                          · {credit.highlight}
                         </span>
-                        {credit.contribution ? (
-                          <p className="text-[var(--text-2)] text-[11px] leading-relaxed">
-                            {credit.contribution}
-                          </p>
-                        ) : (
-                          <p className="text-[var(--text-3)] italic font-mono text-[11px]">
-                            [ TODO: Add contribution detail for {credit.title} ]
-                          </p>
-                        )}
-                      </div>
-                    )}
+                      )}
+                    </div>
+                    <span className="micro-label text-[9px] text-[var(--text-3)] shrink-0 px-1.5 py-0.5 border border-[var(--line)]">
+                      {credit.category === 'film' ? 'Film' : 'Series'}
+                    </span>
                   </div>
-                )}
+
+                  <div className="text-xs text-[var(--text-2)] truncate">
+                    {credit.role}
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs text-[var(--text-3)] pt-0.5">
+                    <span>{credit.studio}</span>
+                    <span className="tabular-nums font-mono">{credit.year}</span>
+                  </div>
+
+                  {/* Optional Contribution Toggle Button */}
+                  {hasContribution && (
+                    <div className="pt-1">
+                      <button
+                        type="button"
+                        onClick={() => toggleContribution(credit.id)}
+                        className="micro-label text-[9px] text-[var(--text-3)] hover:text-[var(--text-1)] flex items-center gap-1 transition-colors"
+                      >
+                        <ChevronRight
+                          className={`w-2.5 h-2.5 transition-transform ${
+                            isRowExpanded ? 'rotate-90' : ''
+                          }`}
+                        />
+                        <span>{isRowExpanded ? 'Hide ownership' : 'Ownership detail'}</span>
+                      </button>
+
+                      {isRowExpanded && (
+                        <div className="mt-2 p-2.5 border border-[var(--line)] bg-[#090d14] rounded-[var(--radius)] text-xs">
+                          <span className="micro-label text-[8px] text-[var(--text-3)] block mb-1">
+                            Ownership Detail
+                          </span>
+                          {credit.contribution ? (
+                            <p className="text-[var(--text-2)] text-[11px] leading-relaxed">
+                              {credit.contribution}
+                            </p>
+                          ) : (
+                            <p className="text-[var(--text-3)] italic font-mono text-[11px]">
+                              [ TODO: Add contribution detail for {credit.title} ]
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}
