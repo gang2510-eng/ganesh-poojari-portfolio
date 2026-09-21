@@ -33,19 +33,19 @@ export default function SelectedWork() {
   return (
     <section
       id="work"
-      className="relative py-[80px] lg:py-[140px] border-b border-[var(--line-blue)] bg-[var(--bg-blue)]"
+      className="relative py-[60px] lg:py-[100px] min-h-[calc(100vh-140px)] bg-[var(--bg-blue)]"
     >
       <div className="max-w-[1240px] mx-auto px-6">
         
         {/* Asymmetric Section Header: Cols 1–5 heading, Cols 8–12 supporting text */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 mb-16 items-end">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 mb-14 items-end">
           <div className="lg:col-span-5">
             <span className="micro-label text-[var(--text-3)] block mb-3">
               Craft & Supervision
             </span>
-            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-[var(--text-1)] leading-none">
+            <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[var(--text-1)] leading-none">
               Selected Work
-            </h2>
+            </h1>
           </div>
           <div className="lg:col-span-7 lg:col-start-6">
             <p className="text-[17px] leading-[1.65] text-[var(--text-2)] max-w-[68ch]">

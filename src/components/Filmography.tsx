@@ -35,7 +35,7 @@ export default function Filmography() {
   return (
     <section
       id="filmography"
-      className="relative py-[80px] lg:py-[140px] border-b border-[var(--line)] bg-[var(--bg)]"
+      className="relative py-[60px] lg:py-[100px] min-h-[calc(100vh-140px)] bg-[var(--bg)]"
     >
       <div className="max-w-[1240px] mx-auto px-6">
         
@@ -45,9 +45,9 @@ export default function Filmography() {
             <span className="micro-label text-[var(--text-3)] block mb-3">
               Production History
             </span>
-            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-[var(--text-1)] leading-none">
+            <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[var(--text-1)] leading-none">
               Filmography
-            </h2>
+            </h1>
           </div>
           
           <div className="lg:col-span-7 lg:col-start-6 flex flex-col sm:flex-row sm:items-end justify-between gap-6">

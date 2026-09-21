@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowUpRight, Play, Film } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowUpRight, Play, Film, Layers } from 'lucide-react';
 import ShowreelModal from './ShowreelModal';
 
 export default function Hero() {
@@ -15,9 +16,9 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative pt-[110px] pb-[80px] lg:pt-[150px] lg:pb-[140px] border-b border-[var(--line)] bg-[var(--bg)]"
+      className="relative py-[60px] lg:py-[100px] min-h-[calc(100vh-140px)] flex flex-col justify-center bg-[var(--bg)]"
     >
-      <div className="max-w-[1240px] mx-auto px-6">
+      <div className="max-w-[1240px] mx-auto px-6 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           
           {/* Main Hero Column (Cols 1–8) */}
@@ -57,9 +58,17 @@ export default function Hero() {
 
             {/* Action Buttons: Line-based, 1px borders, 2px radius, no shadows */}
             <div className="flex flex-wrap items-center gap-3 mb-12">
+              <Link
+                href="/work"
+                className="micro-label px-5 py-3 border border-[var(--line-strong)] text-[var(--text-1)] hover:border-[var(--text-1)] bg-transparent rounded-[var(--radius)] transition-colors flex items-center gap-2"
+              >
+                <Layers className="w-3.5 h-3.5" />
+                <span>Selected Work (6)</span>
+              </Link>
+
               <button
                 onClick={() => setIsShowreelOpen(true)}
-                className="micro-label px-5 py-3 border border-[var(--line-strong)] text-[var(--text-1)] hover:border-[var(--text-1)] bg-transparent rounded-[var(--radius)] transition-colors flex items-center gap-2"
+                className="micro-label px-5 py-3 border border-[var(--line)] text-[var(--text-2)] hover:text-[var(--text-1)] hover:border-[var(--line-strong)] bg-transparent rounded-[var(--radius)] transition-colors flex items-center gap-2"
               >
                 <Play className="w-3.5 h-3.5 fill-current" />
                 <span>Watch Showreel</span>
@@ -69,19 +78,19 @@ export default function Hero() {
                 href={ARTSTATION_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="micro-label px-5 py-3 border border-[var(--line)] text-[var(--text-2)] hover:text-[var(--text-1)] hover:border-[var(--line-strong)] bg-transparent rounded-[var(--radius)] transition-colors flex items-center gap-2"
+                className="micro-label px-5 py-3 border border-[var(--line)] text-[var(--text-3)] hover:text-[var(--text-1)] hover:border-[var(--line-strong)] bg-transparent rounded-[var(--radius)] transition-colors flex items-center gap-2"
               >
                 <span>ArtStation</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
 
-              <a
-                href="#filmography"
+              <Link
+                href="/filmography"
                 className="micro-label px-5 py-3 border border-[var(--line)] text-[var(--text-3)] hover:text-[var(--text-1)] hover:border-[var(--line-strong)] bg-transparent rounded-[var(--radius)] transition-colors flex items-center gap-2"
               >
                 <Film className="w-3.5 h-3.5" />
                 <span>Filmography (52)</span>
-              </a>
+              </Link>
             </div>
 
             {/* Experience Ticker: Hairline border block */}
