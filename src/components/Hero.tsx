@@ -9,7 +9,7 @@ export default function Hero() {
   const [isShowreelOpen, setIsShowreelOpen] = useState(false);
 
   const ARTSTATION_URL = 'https://ganesh.artstation.com/';
-  const SHOWREEL_URL = 'https://vimeo.com';
+  const SHOWREEL_URL = 'https://vimeo.com/1031133774?fl=ip&fe=ec';
   const LINKEDIN_URL = 'https://www.linkedin.com/in/ganesh-poojari-a878b017/';
   const IMDB_URL = 'https://www.imdb.com/name/nm6199377/';
 

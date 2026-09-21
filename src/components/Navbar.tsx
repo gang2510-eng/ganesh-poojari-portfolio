@@ -21,7 +21,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const ARTSTATION_URL = 'https://ganesh.artstation.com/';
-  const SHOWREEL_URL = 'https://vimeo.com';
+  const SHOWREEL_URL = 'https://vimeo.com/1031133774?fl=ip&fe=ec';
 
   return (
     <>

@@ -4,7 +4,7 @@ import { ExternalLink, Play } from 'lucide-react';
 
 export default function About() {
   const ARTSTATION_URL = 'https://ganesh.artstation.com/';
-  const SHOWREEL_URL = 'https://vimeo.com';
+  const SHOWREEL_URL = 'https://vimeo.com/1031133774?fl=ip&fe=ec';
 
   return (
     <section
