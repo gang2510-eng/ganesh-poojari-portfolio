@@ -1,44 +1,113 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,700;1,400&family=Spline+Sans+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 :root {
-  --font-outfit: 'Outfit', sans-serif;
+  --bg: #07090E;
+  --bg-blue: #12202F;
+  --bg-blue-lo: #101A26;
+  --text-1: #ECEFF3;
+  --text-2: #9BA5B2;
+  --text-3: #838C9A;
+  --accent: #FF8A3D;
+  --accent-deep: #B85A22;
+  --line: rgba(236, 239, 243, 0.09);
+  --line-strong: rgba(236, 239, 243, 0.18);
+  --line-blue: rgba(110, 159, 224, 0.16);
+  --radius: 2px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  --font-display: 'Archivo', sans-serif;
+  --font-body: 'Archivo', sans-serif;
+  --font-mono: 'Spline Sans Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--bg);
+  color: var(--text-1);
 }
 
 body {
-  font-family: var(--font-outfit);
-  background-color: #09090b;
-  color: #f4f4f5;
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--text-1);
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Micro-labels: eyebrows, table headers, metadata */
+.micro-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--text-3);
+  line-height: 1.4;
+}
+
+/* Tabular numbers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Base card styling adhering to Ink & Ember */
+.ink-card {
+  border: 1px solid var(--line);
+  background: transparent;
+  border-radius: var(--radius);
+  transition: border-color 300ms var(--ease);
+}
+
+.ink-card:hover {
+  border-color: var(--line-strong);
+}
+
+.ink-card-blue {
+  border: 1px solid var(--line-blue);
+  background: transparent;
+  border-radius: var(--radius);
+  transition: border-color 300ms var(--ease);
+}
+
+.ink-card-blue:hover {
+  border-color: var(--line-strong);
+}
+
+/* Section styling */
+.section-rule {
+  border-bottom: 1px solid var(--line);
+}
+
+.section-rule-blue {
+  border-bottom: 1px solid var(--line-blue);
+}
+
+/* Transitions adhering to motion constraints: max 8px translateY, 300ms cubic-bezier(0.2, 0, 0, 1) */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
-  border-radius: 9999px;
+  background: rgba(236, 239, 243, 0.15);
+  border-radius: var(--radius);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
-}
-
-/* Subtle architectural cards */
-.double-bezel {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 1rem;
-  padding: 0.25rem;
-}
-
-.double-bezel-inner {
-  background: rgba(18, 18, 20, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: calc(1rem - 0.25rem);
+  background: rgba(236, 239, 243, 0.3);
 }
