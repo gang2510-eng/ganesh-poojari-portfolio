@@ -7,64 +7,9 @@ interface ExperienceItem {
   company: string;
   location: string;
   description: string;
-}
-
-// Studio Logo Vector Badges (Monochrome hairline styling for Ink & Ember)
-function StudioLogo({ companyId }: { companyId: string }) {
-  switch (companyId) {
-    case 'framestore':
-      return (
-        <div className="h-8 px-3 border border-[var(--line)] rounded-[var(--radius)] bg-[#0c121c] inline-flex items-center text-[var(--text-1)] mb-3">
-          <svg viewBox="0 0 130 20" className="h-3.5 w-auto fill-current" aria-label="Framestore Logo">
-            <text x="0" y="15" fontFamily="'Archivo', sans-serif" fontWeight="700" fontSize="14" letterSpacing="-0.03em">
-              framestore
-            </text>
-          </svg>
-        </div>
-      );
-    case 'pixomondo':
-      return (
-        <div className="h-8 px-3 border border-[var(--line)] rounded-[var(--radius)] bg-[#0c121c] inline-flex items-center text-[var(--text-1)] mb-3">
-          <svg viewBox="0 0 140 20" className="h-3.5 w-auto fill-current" aria-label="PIXOMONDO Logo">
-            <text x="0" y="15" fontFamily="'Archivo', sans-serif" fontWeight="800" fontSize="13" letterSpacing="0.1em">
-              PIXOMONDO
-            </text>
-          </svg>
-        </div>
-      );
-    case 'dneg':
-      return (
-        <div className="h-8 px-3 border border-[var(--line)] rounded-[var(--radius)] bg-[#0c121c] inline-flex items-center text-[var(--text-1)] mb-3">
-          <svg viewBox="0 0 80 20" className="h-4 w-auto fill-current" aria-label="DNEG Logo">
-            <text x="0" y="16" fontFamily="'Archivo', sans-serif" fontWeight="900" fontSize="18" letterSpacing="-0.02em">
-              DNEG
-            </text>
-          </svg>
-        </div>
-      );
-    case 'primefocus':
-      return (
-        <div className="h-8 px-3 border border-[var(--line)] rounded-[var(--radius)] bg-[#0c121c] inline-flex items-center text-[var(--text-1)] mb-3">
-          <div className="flex items-center gap-2">
-            <div className="w-3.5 h-3.5 border border-[var(--text-2)] rotate-45 flex items-center justify-center shrink-0">
-              <div className="w-1.5 h-1.5 bg-[var(--text-1)]" />
-            </div>
-            <span className="font-bold text-xs tracking-wider text-[var(--text-1)] font-sans">
-              PRIME FOCUS
-            </span>
-          </div>
-        </div>
-      );
-    case 'crest':
-    default:
-      return (
-        <div className="h-8 px-3 border border-[var(--line)] rounded-[var(--radius)] bg-[#0c121c] inline-flex items-center text-[var(--text-1)] mb-3">
-          <span className="micro-label text-[9px] text-[var(--text-2)] font-semibold">
-            TATA ELXSI · CREST
-          </span>
-        </div>
-      );
-  }
+  logoSrc: string;
+  logoAlt: string;
+  logoClass: string;
 }
 
 export default function Experience() {
@@ -76,6 +21,9 @@ export default function Experience() {
       company: 'Framestore',
       location: 'Mumbai, India',
       description: 'Leading modeling work across hero assets and production deliverables for film VFX projects. Supervising artists, reviewing work for quality and visual consistency, and collaborating with lookdev, rigging, and downstream departments for production-ready handoffs.',
+      logoSrc: '/logos/framestore.svg',
+      logoAlt: 'Framestore Logo',
+      logoClass: 'h-4.5 sm:h-5 w-auto object-contain',
     },
     {
       id: 'pixomondo',
@@ -84,6 +32,9 @@ export default function Experience() {
       company: 'PIXOMONDO',
       location: 'Montreal, QC, Canada',
       description: 'Oversaw asset development across build and modeling workflows for feature film and VFX production. Managed artist assignments, review cycles, and schedule targets while solving complex build issues for international show pipelines.',
+      logoSrc: '/logos/pixomondo.svg',
+      logoAlt: 'PIXOMONDO Logo',
+      logoClass: 'h-3.5 sm:h-4 w-auto object-contain',
     },
     {
       id: 'dneg',
@@ -92,6 +43,9 @@ export default function Experience() {
       company: 'DNEG',
       location: 'India',
       description: 'Supervised and delivered high-quality production assets for major Hollywood blockbusters (The Matrix 4, Dune, Blade Runner 2049, Bohemian Rhapsody) and Emmy Award-winning series (Chernobyl, Westworld). Led character, creature, environment, and hard-surface modeling teams.',
+      logoSrc: '/logos/dneg.svg',
+      logoAlt: 'DNEG Logo',
+      logoClass: 'h-5 sm:h-5.5 w-auto object-contain',
     },
     {
       id: 'primefocus',
@@ -100,6 +54,9 @@ export default function Experience() {
       company: 'Prime Focus World',
       location: 'Mumbai & UK',
       description: 'Crafted detailed 3D character assets and models for major feature film visual effects and 3D conversions.',
+      logoSrc: '/logos/primefocus.png',
+      logoAlt: 'Prime Focus Logo',
+      logoClass: 'h-7 sm:h-8 w-auto object-contain',
     },
     {
       id: 'crest',
@@ -108,6 +65,9 @@ export default function Experience() {
       company: 'Tata Elxsi, PIXION, Crest Animation Studios, Raj Taru VFX',
       location: 'India',
       description: 'Built foundational expertise as Lead Character Modeler and freelance texturing artist across digital animation and VFX studios.',
+      logoSrc: '/logos/tataelxsi.png',
+      logoAlt: 'Tata Elxsi Logo',
+      logoClass: 'h-4 sm:h-4.5 w-auto object-contain',
     },
   ];
 
@@ -140,13 +100,20 @@ export default function Experience() {
           {experiences.map((exp) => (
             <div
               key={exp.id}
-              className="p-6 sm:p-8 hover:bg-[#0c121c]/40 transition-colors"
+              className="group p-6 sm:p-8 hover:bg-[#0c121c]/40 transition-colors"
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-start">
                 
                 {/* Meta Column with Company Logo (Cols 1–4) */}
                 <div className="lg:col-span-4 flex flex-col items-start">
-                  <StudioLogo companyId={exp.id} />
+                  <div className="h-12 px-4 py-1.5 rounded-[var(--radius)] border border-[var(--line)] bg-[#0c121c] inline-flex items-center justify-center mb-3.5 group-hover:border-[var(--line-strong)] transition-colors">
+                    <img
+                      src={exp.logoSrc}
+                      alt={exp.logoAlt}
+                      className={`${exp.logoClass} opacity-85 group-hover:opacity-100 transition-opacity`}
+                      loading="lazy"
+                    />
+                  </div>
                   
                   <span className="micro-label text-[10px] text-[var(--text-3)] mb-1 tabular-nums">
                     {exp.period}
