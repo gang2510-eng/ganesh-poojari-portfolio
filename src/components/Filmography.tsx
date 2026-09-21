@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { ChevronDown, ChevronUp, ChevronRight, ExternalLink, LayoutGrid, List } from 'lucide-react';
+import { ChevronRight, ExternalLink, LayoutGrid, List } from 'lucide-react';
 import { filmographyData, FilmCredit } from '@/data/filmographyData';
 import FilmDetailModal from './FilmDetailModal';
 
@@ -11,7 +11,6 @@ type ViewMode = 'grid' | 'table';
 export default function Filmography() {
   const [filter, setFilter] = useState<CategoryFilter>('all');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [selectedCredit, setSelectedCredit] = useState<FilmCredit | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [expandedContributions, setExpandedContributions] = useState<Record<string, boolean>>({});
@@ -41,9 +40,8 @@ export default function Filmography() {
     });
   }, [filter]);
 
-  // Display 18 credits (3 rows of 6) by default in grid view, or 12 in table view, or all if expanded
-  const defaultCount = viewMode === 'grid' ? 18 : 12;
-  const displayedCredits = isExpanded ? filteredCredits : filteredCredits.slice(0, defaultCount);
+  // Show all movies directly in one continuous scroll
+  const displayedCredits = filteredCredits;
 
   const filmCount = filmographyData.filter((p) => p.category === 'film').length;
   const tvCount = filmographyData.filter((p) => p.category === 'tv').length;
@@ -144,7 +142,7 @@ export default function Filmography() {
           </div>
         </div>
 
-        {/* PRIMARY VIEW: 6 POSTERS IN A ROW GRID */}
+        {/* PRIMARY VIEW: 6 POSTERS IN A ROW GRID — ALL 52 IN ONE CONTINUOUS SCROLL */}
         {viewMode === 'grid' && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
             {displayedCredits.map((credit) => (
@@ -227,7 +225,7 @@ export default function Filmography() {
           </div>
         )}
 
-        {/* ALTERNATIVE VIEW: COMPACT 5-COLUMN TABLE */}
+        {/* ALTERNATIVE VIEW: COMPACT 5-COLUMN TABLE — ALL 52 IN ONE CONTINUOUS SCROLL */}
         {viewMode === 'table' && (
           <div className="border border-[var(--line)] rounded-[var(--radius)] overflow-hidden">
             <table className="w-full text-left border-collapse">
@@ -345,29 +343,8 @@ export default function Filmography() {
           </div>
         )}
 
-        {/* Expander: "Show all 52 credits" */}
-        <div className="mt-10 flex justify-center">
-          <button
-            type="button"
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="micro-label px-5 py-2.5 border border-[var(--line)] hover:border-[var(--line-strong)] text-[var(--text-2)] hover:text-[var(--text-1)] bg-transparent rounded-[var(--radius)] transition-colors flex items-center gap-2"
-          >
-            {isExpanded ? (
-              <>
-                <span>Show Fewer ({defaultCount} Credits)</span>
-                <ChevronUp className="w-3.5 h-3.5" />
-              </>
-            ) : (
-              <>
-                <span>Show All 52 Credits</span>
-                <ChevronDown className="w-3.5 h-3.5" />
-              </>
-            )}
-          </button>
-        </div>
-
         {/* External Link: IMDb */}
-        <div className="mt-12 text-center">
+        <div className="mt-14 text-center">
           <a
             href="https://www.imdb.com/name/nm6199377/"
             target="_blank"
