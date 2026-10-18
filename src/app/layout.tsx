@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
       <body className="antialiased bg-[#07090E] text-[#ECEFF3] min-h-screen flex flex-col">
         <LeftRail />
         <Navbar />

@@ -1,5 +1,13 @@
 'use client';
 
+import { filmographyData } from '@/data/filmographyData';
+
+interface StudioLogo {
+  src: string;
+  alt: string;
+  className: string;
+}
+
 interface ExperienceItem {
   id: string;
   period: string;
@@ -7,9 +15,7 @@ interface ExperienceItem {
   company: string;
   location: string;
   description: string;
-  logoSrc: string;
-  logoAlt: string;
-  logoClass: string;
+  logos: StudioLogo[];
 }
 
 export default function Experience() {
@@ -21,9 +27,13 @@ export default function Experience() {
       company: 'Framestore',
       location: 'Mumbai, India',
       description: 'Leading modeling work across hero assets and production deliverables for film VFX projects. Supervising artists, reviewing work for quality and visual consistency, and collaborating with lookdev, rigging, and downstream departments for production-ready handoffs.',
-      logoSrc: '/logos/framestore.svg',
-      logoAlt: 'Framestore Logo',
-      logoClass: 'h-4.5 sm:h-5 w-auto object-contain',
+      logos: [
+        {
+          src: '/logos/framestore.svg',
+          alt: 'Framestore Logo',
+          className: 'h-4.5 sm:h-5 w-auto object-contain',
+        },
+      ],
     },
     {
       id: 'pixomondo',
@@ -32,9 +42,13 @@ export default function Experience() {
       company: 'PIXOMONDO',
       location: 'Montreal, QC, Canada',
       description: 'Oversaw asset development across build and modeling workflows for feature film and VFX production. Managed artist assignments, review cycles, and schedule targets while solving complex build issues for international show pipelines.',
-      logoSrc: '/logos/pixomondo.svg',
-      logoAlt: 'PIXOMONDO Logo',
-      logoClass: 'h-3.5 sm:h-4 w-auto object-contain',
+      logos: [
+        {
+          src: '/logos/pixomondo.svg',
+          alt: 'PIXOMONDO Logo',
+          className: 'h-3.5 sm:h-4 w-auto object-contain',
+        },
+      ],
     },
     {
       id: 'dneg',
@@ -43,9 +57,13 @@ export default function Experience() {
       company: 'DNEG',
       location: 'India',
       description: 'Supervised and delivered high-quality production assets for major Hollywood blockbusters (The Matrix 4, Dune, Blade Runner 2049, Bohemian Rhapsody) and Emmy Award-winning series (Chernobyl, Westworld). Led character, creature, environment, and hard-surface modeling teams.',
-      logoSrc: '/logos/dneg.svg',
-      logoAlt: 'DNEG Logo',
-      logoClass: 'h-5 sm:h-5.5 w-auto object-contain',
+      logos: [
+        {
+          src: '/logos/dneg.svg',
+          alt: 'DNEG Logo',
+          className: 'h-5 sm:h-5.5 w-auto object-contain',
+        },
+      ],
     },
     {
       id: 'primefocus',
@@ -54,9 +72,13 @@ export default function Experience() {
       company: 'Prime Focus World',
       location: 'Mumbai & UK',
       description: 'Crafted detailed 3D character assets and models for major feature film visual effects and 3D conversions.',
-      logoSrc: '/logos/primefocus.png',
-      logoAlt: 'Prime Focus Logo',
-      logoClass: 'h-7 sm:h-8 w-auto object-contain',
+      logos: [
+        {
+          src: '/logos/primefocus.png',
+          alt: 'Prime Focus Logo',
+          className: 'h-7 sm:h-8 w-auto object-contain',
+        },
+      ],
     },
     {
       id: 'crest',
@@ -65,9 +87,23 @@ export default function Experience() {
       company: 'Tata Elxsi, PIXION, Crest Animation Studios, Raj Taru VFX',
       location: 'India',
       description: 'Built foundational expertise as Lead Character Modeler and freelance texturing artist across digital animation and VFX studios.',
-      logoSrc: '/logos/tataelxsi.png',
-      logoAlt: 'Tata Elxsi Logo',
-      logoClass: 'h-4 sm:h-4.5 w-auto object-contain',
+      logos: [
+        {
+          src: '/logos/tataelxsi.png',
+          alt: 'Tata Elxsi Logo',
+          className: 'h-3.5 sm:h-4 w-auto object-contain',
+        },
+        {
+          src: '/logos/pixion.png',
+          alt: 'Pixion Logo',
+          className: 'h-3.5 sm:h-4 w-auto object-contain',
+        },
+        {
+          src: '/logos/crest_horizontal.svg',
+          alt: 'Crest Animation Studios Logo',
+          className: 'h-4.5 sm:h-5 w-auto object-contain',
+        },
+      ],
     },
   ];
 
@@ -90,7 +126,7 @@ export default function Experience() {
           </div>
           <div className="lg:col-span-7 lg:col-start-6">
             <p className="text-[17px] leading-[1.65] text-[var(--text-2)] max-w-[68ch]">
-              Supervisory leadership and lead modeling roles across North American and Indian facilities, delivering 52 verified credits over two decades.
+              Supervisory leadership and lead modeling roles across North American and Indian facilities, delivering {filmographyData.length} verified credits over two decades.
             </p>
           </div>
         </div>
@@ -104,15 +140,25 @@ export default function Experience() {
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-start">
                 
-                {/* Meta Column with Company Logo (Cols 1–4) */}
+                {/* Meta Column with Company Logo(s) (Cols 1–4) */}
                 <div className="lg:col-span-4 flex flex-col items-start">
-                  <div className="h-12 px-4 py-1.5 rounded-[var(--radius)] border border-[var(--line)] bg-[#0c121c] inline-flex items-center justify-center mb-3.5 group-hover:border-[var(--line-strong)] transition-colors">
-                    <img
-                      src={exp.logoSrc}
-                      alt={exp.logoAlt}
-                      className={`${exp.logoClass} opacity-85 group-hover:opacity-100 transition-opacity`}
-                      loading="lazy"
-                    />
+                  <div className="h-12 px-3 sm:px-4 py-1.5 rounded-[var(--radius)] border border-[var(--line)] bg-[#0c121c] inline-flex items-center justify-center gap-2.5 sm:gap-3.5 mb-3.5 group-hover:border-[var(--line-strong)] transition-colors max-w-full">
+                    {exp.logos.map((logo, idx) => (
+                      <div key={idx} className="flex items-center gap-2.5 sm:gap-3.5">
+                        {idx > 0 && (
+                          <span
+                            className="w-px h-3.5 bg-white/10 shrink-0"
+                            aria-hidden="true"
+                          />
+                        )}
+                        <img
+                          src={logo.src}
+                          alt={logo.alt}
+                          className={`${logo.className} opacity-100 transition-transform duration-200 group-hover:scale-105 shrink-0`}
+                          loading="lazy"
+                        />
+                      </div>
+                    ))}
                   </div>
                   
                   <span className="micro-label text-[10px] text-[var(--text-3)] mb-1 tabular-nums">

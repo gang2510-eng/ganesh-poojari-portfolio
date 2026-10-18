@@ -1,62 +1,74 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Menu, X, Play } from 'lucide-react';
 import ShowreelModal from './ShowreelModal';
 
 const NAV_ITEMS = [
   { id: 'about', label: 'About', href: '/about' },
-  { id: 'work', label: 'Work', href: '/work' },
   { id: 'experience', label: 'Experience', href: '/experience' },
   { id: 'filmography', label: 'Filmography', href: '/filmography' },
+  { id: 'breakdown', label: 'Show Breakdown', href: '/work?tab=breakdown' },
+  { id: 'personal', label: 'Personal Work', href: '/work?tab=personal' },
   { id: 'skills', label: 'Skills', href: '/skills' },
   { id: 'contact', label: 'Contact', href: '/contact' },
 ];
 
-export default function Navbar() {
+function NavbarContent() {
   const [isOpen, setIsOpen] = useState(false);
   const [isShowreelOpen, setIsShowreelOpen] = useState(false);
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentTab = searchParams.get('tab') || 'breakdown';
 
-  const ARTSTATION_URL = 'https://ganesh.artstation.com/';
+  const IMDB_URL = 'https://www.imdb.com/name/nm6199377/';
   const SHOWREEL_URL = 'https://vimeo.com/1031133774?fl=ip&fe=ec';
+
+  const isItemActive = (item: (typeof NAV_ITEMS)[number]) => {
+    if (pathname === '/work') {
+      if (item.id === 'breakdown') return currentTab === 'breakdown';
+      if (item.id === 'personal') return currentTab === 'personal';
+      return false;
+    }
+    return pathname === item.href;
+  };
 
   return (
     <>
       <header className="fixed top-0 inset-x-0 z-50 flex justify-center px-4 sm:px-6 pt-4 pb-2 pointer-events-none">
-        <nav className="w-full max-w-[1240px] bg-[#07090E]/95 border border-[var(--line)] px-5 py-3 rounded-[var(--radius)] flex items-center justify-between transition-colors pointer-events-auto">
+        <nav className="w-full max-w-[1240px] bg-[#07090E]/95 border border-[var(--line)] px-4 sm:px-5 py-3 rounded-[var(--radius)] flex items-center justify-between transition-colors pointer-events-auto shadow-lg backdrop-blur-md">
           {/* Brand Link to Overview / */}
           <Link
             href="/"
-            className="flex items-center gap-3 text-sm font-semibold tracking-tight text-[var(--text-1)] hover:text-white transition-colors"
+            className="flex items-center gap-2.5 text-sm font-semibold tracking-tight text-[var(--text-1)] hover:text-white transition-colors shrink-0"
           >
             <span className="font-semibold text-sm tracking-tight text-[var(--text-1)]">
               Ganesh Poojari
             </span>
-            <span className="hidden sm:inline-block text-[var(--text-3)] font-normal text-xs">
+            <span className="hidden lg:inline-block text-[var(--text-3)] font-normal text-xs">
               / Supervisor
             </span>
           </Link>
 
           {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-4 lg:gap-6">
             {NAV_ITEMS.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive = isItemActive(item);
               return (
                 <Link
                   key={item.id}
                   href={item.href}
-                  className={`micro-label relative py-1 transition-colors ${
-                    isActive ? 'text-[var(--text-1)] font-medium' : 'hover:text-[var(--text-1)]'
+                  className={`micro-label relative py-1 transition-colors text-xs ${
+                    isActive ? 'text-[var(--text-1)] font-medium' : 'text-[var(--text-3)] hover:text-[var(--text-1)]'
                   }`}
                 >
                   {item.label}
-                  {/* ORANGE USE 2 OF 4: Active Nav Indicator */}
+                  {/* Active Nav Indicator */}
                   {isActive && (
                     <span
-                      className="absolute bottom-0 left-0 right-0 h-[1px] bg-[var(--accent)]"
+                      className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-[var(--accent)]"
                       aria-hidden="true"
                     />
                   )}
@@ -68,16 +80,14 @@ export default function Navbar() {
           {/* Action CTAs */}
           <div className="hidden md:flex items-center gap-3">
             <a
-              href={ARTSTATION_URL}
+              href={IMDB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-1.5 border border-[var(--line)] text-[var(--text-3)] hover:text-[var(--text-1)] hover:border-[var(--line-strong)] rounded-[var(--radius)] transition-colors"
-              title="ArtStation Portfolio"
-              aria-label="ArtStation"
+              className="px-2 py-1 border border-[var(--line)] hover:border-[#f5c518]/50 hover:bg-[#f5c518]/10 text-[var(--text-3)] hover:text-[#f5c518] rounded-[var(--radius)] transition-colors flex items-center gap-1.5"
+              title="IMDb Profile"
+              aria-label="IMDb Profile"
             >
-              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M.057 18.816L3.435 13.01h.001l4.896 8.384H1.678A1.62 1.62 0 0 1 .057 18.816zm11.233-14.88a1.642 1.642 0 0 1 1.398.777l7.842 13.486c.277.476.297 1.05.053 1.543a1.636 1.636 0 0 1-1.451.858H8.847l2.443-4.185h6.666L12.69 7.421l-3.328 5.707-2.44-4.183 4.368-7.509a1.64 1.64 0 0 1 1.399-.777z" />
-              </svg>
+              <span className="px-1 py-0.2 bg-[#f5c518] text-black font-black text-[9px] rounded-[1px] leading-tight">IMDb</span>
             </a>
 
             <button
@@ -116,23 +126,26 @@ export default function Navbar() {
                 key={item.id}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className={`micro-label text-left py-2 border-b border-[var(--line)] ${
-                  pathname === item.href
+                className={`micro-label text-left py-2 border-b border-[var(--line)] flex items-center justify-between ${
+                  isItemActive(item)
                     ? 'text-[var(--text-1)] font-semibold'
                     : 'text-[var(--text-2)] hover:text-[var(--text-1)]'
                 }`}
               >
-                {item.label}
+                <span>{item.label}</span>
+                {isItemActive(item) && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+                )}
               </Link>
             ))}
             <div className="pt-2 flex items-center justify-between">
               <a
-                href={ARTSTATION_URL}
+                href={IMDB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="micro-label text-[10px] text-[var(--text-3)] hover:text-[var(--text-1)]"
+                className="micro-label text-[10px] text-[var(--text-3)] hover:text-[#f5c518]"
               >
-                ArtStation ↗
+                IMDb ↗
               </a>
               <button
                 onClick={() => {
@@ -163,3 +176,18 @@ export default function Navbar() {
     </>
   );
 }
+
+export default function Navbar() {
+  return (
+    <Suspense
+      fallback={
+        <header className="fixed top-0 inset-x-0 z-50 flex justify-center px-4 sm:px-6 pt-4 pb-2 pointer-events-none">
+          <nav className="w-full max-w-[1240px] bg-[#07090E]/95 border border-[var(--line)] px-4 sm:px-5 py-3 rounded-[var(--radius)] flex items-center justify-between pointer-events-auto shadow-lg" />
+        </header>
+      }
+    >
+      <NavbarContent />
+    </Suspense>
+  );
+}
+

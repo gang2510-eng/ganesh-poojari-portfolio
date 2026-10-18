@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sync:imdb": "node scripts/sync-imdb.mjs",
+    "sync:imdb:check": "node scripts/sync-imdb.mjs --dry-run"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.3",

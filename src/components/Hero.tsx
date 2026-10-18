@@ -4,11 +4,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight, Play, Film, Layers } from 'lucide-react';
 import ShowreelModal from './ShowreelModal';
+import { filmographyData } from '@/data/filmographyData';
 
 export default function Hero() {
   const [isShowreelOpen, setIsShowreelOpen] = useState(false);
 
-  const ARTSTATION_URL = 'https://ganesh.artstation.com/';
   const SHOWREEL_URL = 'https://vimeo.com/1031133774?fl=ip&fe=ec';
   const LINKEDIN_URL = 'https://www.linkedin.com/in/ganesh-poojari-a878b017/';
   const IMDB_URL = 'https://www.imdb.com/name/nm6199377/';
@@ -63,7 +63,7 @@ export default function Hero() {
                 className="micro-label px-5 py-3 border border-[var(--line-strong)] text-[var(--text-1)] hover:border-[var(--text-1)] bg-transparent rounded-[var(--radius)] transition-colors flex items-center gap-2"
               >
                 <Layers className="w-3.5 h-3.5" />
-                <span>Selected Work (6)</span>
+                <span>Selected Work</span>
               </Link>
 
               <button
@@ -75,12 +75,12 @@ export default function Hero() {
               </button>
 
               <a
-                href={ARTSTATION_URL}
+                href={IMDB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="micro-label px-5 py-3 border border-[var(--line)] text-[var(--text-3)] hover:text-[var(--text-1)] hover:border-[var(--line-strong)] bg-transparent rounded-[var(--radius)] transition-colors flex items-center gap-2"
+                className="micro-label px-5 py-3 border border-[var(--line)] text-[var(--text-3)] hover:text-[#f5c518] hover:border-[#f5c518]/50 bg-transparent rounded-[var(--radius)] transition-colors flex items-center gap-2"
               >
-                <span>ArtStation</span>
+                <span>IMDb</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
 
@@ -89,7 +89,7 @@ export default function Hero() {
                 className="micro-label px-5 py-3 border border-[var(--line)] text-[var(--text-3)] hover:text-[var(--text-1)] hover:border-[var(--line-strong)] bg-transparent rounded-[var(--radius)] transition-colors flex items-center gap-2"
               >
                 <Film className="w-3.5 h-3.5" />
-                <span>Filmography (52)</span>
+                <span>Filmography ({filmographyData.length})</span>
               </Link>
             </div>
 
@@ -107,7 +107,7 @@ export default function Hero() {
               </div>
               <div className="px-3 text-left">
                 <div className="micro-label opacity-60 mb-1">Production</div>
-                <div className="text-xl font-bold text-[var(--text-1)] tabular-nums">52 Credits</div>
+                <div className="text-xl font-bold text-[var(--text-1)] tabular-nums">{filmographyData.length} Credits</div>
                 <div className="micro-label text-[9px] mt-0.5 text-[var(--text-3)]">Verified IMDb</div>
               </div>
             </div>
@@ -150,14 +150,12 @@ export default function Hero() {
                   >
                     IN
                   </a>
-                  <a
-                    href={ARTSTATION_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href="/work"
                     className="micro-label text-[9px] py-1 border border-[var(--line)] hover:border-[var(--line-strong)] text-[var(--text-2)] hover:text-[var(--text-1)] rounded-[var(--radius)] transition-colors"
                   >
-                    ART
-                  </a>
+                    WORK
+                  </Link>
                   <button
                     onClick={() => setIsShowreelOpen(true)}
                     className="micro-label text-[9px] py-1 border border-[var(--line)] hover:border-[var(--line-strong)] text-[var(--text-2)] hover:text-[var(--text-1)] rounded-[var(--radius)] transition-colors"

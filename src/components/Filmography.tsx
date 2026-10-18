@@ -66,7 +66,7 @@ export default function Filmography() {
           
           <div className="lg:col-span-7 lg:col-start-6 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <p className="text-[17px] leading-[1.65] text-[var(--text-2)] max-w-[40ch]">
-              Complete record of 52 Hollywood feature films and series across Framestore, PIXOMONDO, DNEG, and Prime Focus.
+              Complete record of {filmographyData.length} Hollywood feature films and series across Framestore, PIXOMONDO, DNEG, and Prime Focus.
             </p>
 
             <div className="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
@@ -111,7 +111,7 @@ export default function Filmography() {
                       : 'text-[var(--text-3)] hover:text-[var(--text-1)] bg-transparent'
                   }`}
                 >
-                  All (52)
+                  All ({filmographyData.length})
                 </button>
 
                 <button
@@ -351,7 +351,7 @@ export default function Filmography() {
             rel="noopener noreferrer"
             className="micro-label text-[10px] text-[var(--text-3)] hover:text-[var(--text-1)] inline-flex items-center gap-1.5 transition-colors"
           >
-            <span>Verify Complete 52 Filmography Credits on IMDb</span>
+            <span>Verify Complete {filmographyData.length} Filmography Credits on IMDb</span>
             <ExternalLink className="w-3 h-3" />
           </a>
         </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { X, ExternalLink, Film } from 'lucide-react';
+import { filmographyData } from '@/data/filmographyData';
 
 interface ShowreelModalProps {
   isOpen: boolean;
@@ -81,7 +82,7 @@ export default function ShowreelModal({
         {/* Footer info bar */}
         <div className="px-5 py-3 bg-[#090d14] flex flex-wrap items-center justify-between gap-2 micro-label text-[10px] text-[var(--text-3)]">
           <span>Facility Experience: Framestore · PIXOMONDO · DNEG · Prime Focus</span>
-          <span className="tabular-nums">20+ Years · 52 Credits</span>
+          <span className="tabular-nums">20+ Years · {filmographyData.length} Credits</span>
         </div>
 
       </div>

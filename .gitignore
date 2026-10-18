@@ -30,6 +30,15 @@ next-env.d.ts
 LinkedIn-Profile.pdf
 *.pdf
 
+# Large raw video files (YouTube / Vimeo embeds used in production)
+*.mp4
+*.mov
+
+# Local backups & databases
+work_images_backup/
+cinemagoer.db
+
 # OS junk
 .DS_Store
 Thumbs.db
+

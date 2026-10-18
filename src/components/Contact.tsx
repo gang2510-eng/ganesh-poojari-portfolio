@@ -99,12 +99,12 @@ export default function Contact() {
               </a>
 
               <a
-                href="https://ganesh.artstation.com/"
+                href="https://www.imdb.com/name/nm6199377/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 border border-[var(--line-blue)] hover:border-[var(--line-strong)] rounded-[var(--radius)] micro-label text-[10px] text-[var(--text-2)] hover:text-[var(--text-1)] flex items-center justify-between transition-colors"
               >
-                <span>ArtStation</span>
+                <span>IMDb Profile</span>
                 <ExternalLink className="w-3 h-3 text-[var(--text-3)]" />
               </a>
             </div>

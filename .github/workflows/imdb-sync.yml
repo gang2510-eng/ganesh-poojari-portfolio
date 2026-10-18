@@ -1,0 +1,44 @@
+name: Automated IMDb Filmography Sync
+
+on:
+  schedule:
+    # Runs every Monday at 00:00 UTC
+    - cron: '0 0 * * 1'
+  workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  sync-imdb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run IMDb Sync Script
+        run: npm run sync:imdb
+
+      - name: Commit and push if new credits were added
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "New credits detected! Committing changes..."
+            git add src/data/filmographyData.ts public/posters/
+            git commit -m "🎬 Auto-sync new credits from IMDb [skip ci]"
+            git push
+          else
+            echo "No new credits found. Repository is up to date."
+          fi

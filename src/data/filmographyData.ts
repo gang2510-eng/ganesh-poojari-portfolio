@@ -64,14 +64,15 @@ export const filmographyData: FilmCredit[] = [
     studio: 'Pixomondo',
   },
   {
-    id: 'houseofthedragon',
-    title: 'House of the Dragon',
-    role: 'Asset Supervisor / Division Lead',
-    year: '2022–2024',
+    id: 'houseofthedragon_s2',
+    title: 'House of the Dragon (Season 2)',
+    role: 'Asset Supervisor',
+    year: '2024',
     category: 'tv',
-    highlight: 'Emmy Winner / HBO',
-    studio: 'Pixomondo YUL',
-    contribution: '', // TODO: Add contribution detail for House of the Dragon
+    highlight: 'HBO Series · Showrunner: Ryan Condal',
+    studio: 'Pixomondo (PXO) · Montreal, Canada',
+    contribution:
+      'Supervised asset development across The Eyrie, Dragonstone, and the Drydock environments, monumental castles, damaged ships, dead dragon head, crowd assets, and medieval props.',
   },
   {
     id: 'beacon23',
@@ -90,11 +91,12 @@ export const filmographyData: FilmCredit[] = [
     studio: 'Pixomondo YUL',
   },
   {
-    id: 'winningtime',
-    title: 'Winning Time: Lakers Dynasty',
+    id: 'winningtime_s2',
+    title: 'Winning Time: Lakers Dynasty (Season 2)',
     role: 'Asset Supervisor',
     year: '2023',
     category: 'tv',
+    highlight: 'HBO Original',
     studio: 'Pixomondo YUL',
   },
   {
@@ -127,6 +129,26 @@ export const filmographyData: FilmCredit[] = [
     role: 'Asset Supervisor',
     year: '2023',
     category: 'tv',
+    studio: 'Pixomondo YUL',
+  },
+  {
+    id: 'houseofthedragon_s1',
+    title: 'House of the Dragon (Season 1)',
+    role: 'Asset Supervisor / Division Lead',
+    year: '2022',
+    category: 'tv',
+    highlight: 'Emmy Winner / HBO · Rulers of Westeros',
+    studio: 'Pixomondo YUL',
+    contribution:
+      'Supervised asset department across hero dragon models, anatomy kinematics, micro-scale reptilian displacement sculpts, and virtual production volume integration.',
+  },
+  {
+    id: 'winningtime_s1',
+    title: 'Winning Time: Lakers Dynasty (Season 1)',
+    role: 'Asset Supervisor',
+    year: '2022',
+    category: 'tv',
+    highlight: 'HBO Original',
     studio: 'Pixomondo YUL',
   },
   {
@@ -188,9 +210,10 @@ export const filmographyData: FilmCredit[] = [
     role: 'Build Supervisor',
     year: '2021',
     category: 'film',
-    highlight: 'Blockbuster Sci-Fi',
+    highlight: 'Dir. Lana Wachowski · DNEG India',
     studio: 'DNEG India',
-    contribution: '', // TODO: Add contribution detail for The Matrix Resurrections
+    contribution:
+      'Supervised build department asset generation for complex biomechanical machine swarms, Sentinels, human pod infrastructure, and mechanical-organic hybrid models.',
   },
   {
     id: 'foundation',
@@ -198,9 +221,10 @@ export const filmographyData: FilmCredit[] = [
     role: 'Build Supervisor',
     year: '2021',
     category: 'tv',
-    highlight: 'Apple TV+ Flagship',
+    highlight: 'Apple TV+ Flagship · VES Winner',
     studio: 'DNEG India',
-    contribution: '', // TODO: Add contribution detail for Foundation
+    contribution:
+      'Supervised VFX modeling across interstellar starfleet vessels, space elevator mega-structures, Trantor imperial architecture, and planetary scale digital environments.',
   },
   {
     id: 'venom2',
@@ -208,7 +232,10 @@ export const filmographyData: FilmCredit[] = [
     role: 'Department Supervision',
     year: '2021',
     category: 'film',
+    highlight: 'Lead VFX Partner · Dir. Andy Serkis',
     studio: 'DNEG',
+    contribution:
+      'Department supervision for hero Carnage symbiote assets, cellular morphing logic, weaponized tentacles, and Grace Cathedral battle sequence sets.',
   },
   {
     id: 'dune',
@@ -216,9 +243,10 @@ export const filmographyData: FilmCredit[] = [
     role: 'Build Supervisor',
     year: '2021',
     category: 'film',
-    highlight: '6x Oscar Winner',
+    highlight: '6x Oscar Winner · Dir. Denis Villeneuve',
     studio: 'DNEG India',
-    contribution: '', // TODO: Add contribution detail for Dune: Part One
+    contribution:
+      'Supervised 3D modeling and build department deliveries across Ornithopter flight gear, military vehicle subdivision surfaces, and Arrakeen palace architectural megastructures.',
   },
   {
     id: 'f9',
@@ -226,7 +254,10 @@ export const filmographyData: FilmCredit[] = [
     role: 'Build Supervisor',
     year: '2021',
     category: 'film',
+    highlight: 'Dir. Justin Lin · Armadillo Super-Truck',
     studio: 'DNEG India',
+    contribution:
+      'Supervised 3D build and vehicular modeling for the 14-wheel armored Armadillo convoy truck, rocket Fiero, stunt vehicles, and photoreal Edinburgh city environments.',
   },
   {
     id: 'eighthundred',
@@ -243,9 +274,10 @@ export const filmographyData: FilmCredit[] = [
     role: 'Build Supervisor',
     year: '2020',
     category: 'tv',
-    highlight: 'HBO Sci-Fi Masterpiece',
+    highlight: 'HBO Sci-Fi Masterpiece · 9x Emmy Nominee',
     studio: 'DNEG',
-    contribution: '', // TODO: Add contribution detail for Westworld
+    contribution:
+      'Supervised asset builds and hard-surface environments for futuristic Los Angeles architectural sets, Delos robotics, hovercraft vehicles, and cybernetic infrastructure.',
   },
   {
     id: 'devs',
@@ -253,7 +285,10 @@ export const filmographyData: FilmCredit[] = [
     role: 'Build Supervisor',
     year: '2020',
     category: 'tv',
+    highlight: 'Dir. Alex Garland · 4x Emmy Nominee',
     studio: 'DNEG',
+    contribution:
+      'Supervised build department modeling for the 100-foot colossal Amaya child statue, electromagnetically suspended quantum laboratory cube, and redwood forest sets.',
   },
   {
     id: 'letterfortheking',
@@ -285,8 +320,10 @@ export const filmographyData: FilmCredit[] = [
     role: 'Build Supervisor',
     year: '2019',
     category: 'tv',
-    highlight: 'Emmy Winner',
+    highlight: 'Emmy & VES Winner · Jim Henson / Netflix',
     studio: 'DNEG',
+    contribution:
+      'Build Supervisor leading asset creation for the Castle of the Crystal, Skeksis baroque ceremonial chariots, Garthim armor, and digital double puppets.',
   },
   {
     id: 'chernobyl',
@@ -294,17 +331,21 @@ export const filmographyData: FilmCredit[] = [
     role: 'VFX Build Supervisor',
     year: '2019',
     category: 'tv',
-    highlight: 'Emmy & Golden Globe Winner',
-    studio: 'DNEG',
-    contribution: '', // TODO: Add contribution detail for Chernobyl
+    highlight: '10x Emmy & BAFTA Winner · HBO | Sky',
+    studio: 'DNEG (HBO | Sky)',
+    contribution:
+      'Modelled and detailed hero environmental and architectural assets for the damaged Reactor Unit 4, Soviet-era industrial structures, debris fields, and Pripyat residential extensions.',
   },
   {
     id: 'godzilla',
     title: 'Godzilla: King of the Monsters',
-    role: 'Build Supervisor',
+    role: 'Asset Supervisor',
     year: '2019',
     category: 'film',
-    studio: 'DNEG',
+    highlight: 'MonsterVerse · Dir. Michael Dougherty',
+    studio: 'DNEG (Mumbai, India)',
+    contribution:
+      'Supervised the asset team across massive underwater environments, Godzilla temple chamber, underwater exploration drones, digital doubles, wrecked ships, and prehistoric creature skeletons.',
   },
   {
     id: 'hotzone',
@@ -320,17 +361,21 @@ export const filmographyData: FilmCredit[] = [
     role: 'Build Supervisor',
     year: '2018',
     category: 'film',
-    highlight: '4x Oscar Winner',
-    studio: 'DNEG',
-    contribution: '', // TODO: Add contribution detail for Bohemian Rhapsody
+    highlight: '4x Oscar Winner · 1985 Wembley Stadium Live Aid',
+    studio: 'DNEG (Mumbai, India)',
+    contribution:
+      'Supervised asset builds and architectural modeling for the historical 1985 Live Aid Wembley Stadium reconstruction, concert stage trussing, sound arrays, and 72,000+ digital crowd assets.',
   },
   {
     id: 'pacificrim',
     title: 'Pacific Rim: Uprising',
-    role: 'Modeling Lead',
+    role: 'Modelling Supervisor',
     year: '2018',
     category: 'film',
+    highlight: 'Dir. Steven S. DeKnight · 38-Artist Leadership',
     studio: 'DNEG',
+    contribution:
+      'Modelling Supervisor leading 38 artists across seven Jaegers, Conn-Pods, Kaiju musculature, vehicles, weapons, and environments.',
   },
   {
     id: 'thelimit',
@@ -343,12 +388,13 @@ export const filmographyData: FilmCredit[] = [
   {
     id: 'bladerunner',
     title: 'Blade Runner 2049',
-    role: 'VFX Modeling Lead',
+    role: 'Modelling Lead',
     year: '2017',
     category: 'film',
-    highlight: 'Oscar Winner Best VFX',
-    studio: 'DNEG',
-    contribution: '', // TODO: Add contribution detail for Blade Runner 2049
+    highlight: 'Oscar, BAFTA & VES Winner · Dir. Denis Villeneuve',
+    studio: 'DNEG (Mumbai, India)',
+    contribution:
+      'Led the Mumbai modelling team across dystopian cityscapes, background buildings, hero digital doubles, futuristic weapons, props, and vehicles.',
   },
   {
     id: 'will',
@@ -369,10 +415,13 @@ export const filmographyData: FilmCredit[] = [
   {
     id: 'life',
     title: 'Life',
-    role: 'Senior VFX Modeler',
+    role: 'Senior Modeller',
     year: '2017',
     category: 'film',
-    studio: 'DNEG',
+    highlight: 'Dir. Daniel Espinosa · Three ISS Modules',
+    studio: 'DNEG (Mumbai, India)',
+    contribution:
+      'Modelled and detailed three International Space Station (ISS) modules, fine ZBrush surface sculpting, and close-up cinematic hard-surface detailing.',
   },
 
   // ----------------------------------------------------
@@ -397,10 +446,13 @@ export const filmographyData: FilmCredit[] = [
   {
     id: 'hercules',
     title: 'Hercules',
-    role: 'Senior Character & Env Modeler',
+    role: 'Senior Modeller',
     year: '2014',
     category: 'film',
-    studio: 'Prime Focus',
+    highlight: 'Dir. Brett Ratner · Dwayne Johnson',
+    studio: 'Prime Focus World (London, UK)',
+    contribution:
+      'Hero digital doubles, extensive crowd assets, props, weapons, and vehicles for large-scale battle sequences.',
   },
   {
     id: 'irandamulagam',
