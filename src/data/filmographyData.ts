@@ -14,6 +14,15 @@ export const filmographyData: FilmCredit[] = [
   // Upcoming & Recent Productions (2024 - 2026)
   // ----------------------------------------------------
   {
+    id: 'theoldguard',
+    title: 'The Old Guard 2',
+    role: 'Asset Supervisor-- Pixomondo',
+    year: '2025',
+    category: 'film',
+    studio: 'Pixomondo / Framestore',
+  },
+
+  {
     id: 'spiderman_bnd',
     title: 'Spider-Man: Brand New Day',
     role: 'Modeling Lead',
