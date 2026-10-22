@@ -7,21 +7,40 @@ export interface FilmCredit {
   studio: string;
   highlight?: string;
   contribution?: string; // Optional one-line ownership detail
+  releaseDate?: string; // Optional exact release date (e.g. '2025-07-11' or ISO date)
+}
+
+/**
+ * Computes a numeric timestamp/score for sorting credits chronologically descending.
+ * Prefers exact `releaseDate` if provided, otherwise extracts the most recent year from `year` (e.g., '2026', '2008–2011').
+ */
+export function getCreditDateScore(credit: FilmCredit): number {
+  if (credit.releaseDate) {
+    const parsed = Date.parse(credit.releaseDate);
+    if (!isNaN(parsed)) return parsed;
+  }
+  const years = credit.year.match(/\b\d{4}\b/g);
+  if (years && years.length > 0) {
+    const latestYear = Math.max(...years.map(Number));
+    return new Date(latestYear, 0, 1).getTime();
+  }
+  return 0;
+}
+
+/**
+ * Sorts credits strictly by latest date/year descending.
+ * Ties preserve original relative ordering.
+ */
+export function sortCreditsByLatestDate(credits: FilmCredit[]): FilmCredit[] {
+  return [...credits].sort((a, b) => {
+    return getCreditDateScore(b) - getCreditDateScore(a);
+  });
 }
 
 export const filmographyData: FilmCredit[] = [
   // ----------------------------------------------------
   // Upcoming & Recent Productions (2024 - 2026)
   // ----------------------------------------------------
-  {
-    id: 'theoldguard',
-    title: 'The Old Guard 2',
-    role: 'Asset Supervisor-- Pixomondo',
-    year: '2025',
-    category: 'film',
-    studio: 'Pixomondo / Framestore',
-  },
-
   {
     id: 'spiderman_bnd',
     title: 'Spider-Man: Brand New Day',
@@ -60,6 +79,14 @@ export const filmographyData: FilmCredit[] = [
     id: 'finaldestination',
     title: 'Final Destination: Bloodlines',
     role: 'Senior Asset Artist',
+    year: '2025',
+    category: 'film',
+    studio: 'Pixomondo',
+  },
+  {
+    id: 'theoldguard2',
+    title: 'The Old Guard 2',
+    role: 'Asset Supervisor',
     year: '2025',
     category: 'film',
     studio: 'Pixomondo',

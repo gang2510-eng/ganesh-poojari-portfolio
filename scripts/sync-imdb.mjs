@@ -61,7 +61,7 @@ function generateId(title, year) {
     .replace(/[^a-z0-9\s]/g, '')
     .trim()
     .split(/\s+/)
-    .slice(0, 3)
+    .slice(0, 4)
     .join('');
   if (!clean) clean = `credit_${year}`;
   return clean;
@@ -71,7 +71,8 @@ function generateId(title, year) {
 function formatText(str) {
   if (!str) return '';
   return str
-    .split(' ')
+    .split(/\s+/)
+    .filter(Boolean)
     .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
     .join(' ');
 }
@@ -107,16 +108,17 @@ function parseCreditsFromMarkdown(md) {
 
     // Extract Role and Studio
     let role = 'Asset Supervisor';
-    let studio = '';
+    let studio = 'Pixomondo';
     const roleLines = block.match(/\*\s+([^\n*]+)(?:\n|$)/g);
     if (roleLines && roleLines.length > 0) {
       for (const rl of roleLines) {
         const cleaned = rl.replace(/^\*\s+/, '').trim();
         if (/^\d{4}/.test(cleaned) || /episode/i.test(cleaned)) continue;
-        if (cleaned.includes(':')) {
-          const parts = cleaned.split(':');
+        if (/--|:|\s-\s/.test(cleaned)) {
+          const parts = cleaned.split(/--|:|\s-\s/);
           role = formatText(parts[0].trim());
-          studio = parts.slice(1).join(':').trim();
+          const rawStudio = parts.slice(1).join(' ').trim();
+          if (rawStudio) studio = formatText(rawStudio);
         } else {
           role = formatText(cleaned);
         }
@@ -245,9 +247,80 @@ async function sync() {
     return;
   }
 
-  // Process and add each new credit
+// Position credit chronologically as per date/year into filmographyData.ts
+function insertCreditChronologically(fileContent, creditEntryCode, creditYear) {
+  const lines = fileContent.split('\n');
+  const entries = [];
+  let curr = null;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.trim() === '{') {
+      curr = { startLine: i };
+    }
+    if (line.includes('year:') && curr) {
+      const match = line.match(/'([^']+)'/);
+      if (match) curr.year = match[1];
+    }
+    if (line.trim() === '},' && curr) {
+      curr.endLine = i;
+      entries.push(curr);
+      curr = null;
+    }
+  }
+
+  const targetYearNum = parseInt((creditYear.match(/\b\d{4}\b/)?.[0]) || '0', 10);
+
+  // Find the first entry that has an earlier (strictly smaller) year than targetYearNum
+  let insertLineIndex = -1;
+  for (const entry of entries) {
+    const entryYears = entry.year ? entry.year.match(/\b\d{4}\b/g) : null;
+    const entryYearNum = entryYears ? Math.max(...entryYears.map(Number)) : 0;
+    if (entryYearNum < targetYearNum) {
+      insertLineIndex = entry.startLine;
+      break;
+    }
+  }
+
+  // If no entry has an earlier year, insert before closing `];`
+  if (insertLineIndex === -1) {
+    const closingIndex = lines.findIndex(l => l.trim() === '];');
+    insertLineIndex = closingIndex !== -1 ? closingIndex : lines.length - 1;
+  }
+
+  // If the line immediately preceding insertLineIndex is a comment banner belonging to an earlier era,
+  // ensure the new entry is placed before the banner.
+  let checkLine = insertLineIndex - 1;
+  while (checkLine >= 0 && lines[checkLine].trim().startsWith('//')) {
+    const bannerLine = lines[checkLine];
+    const eraMatch = bannerLine.match(/\b(\d{4})\s*-\s*(\d{4})\b/);
+    if (eraMatch) {
+      const endEra = parseInt(eraMatch[2], 10);
+      if (targetYearNum > endEra) {
+        let blockStart = checkLine;
+        while (blockStart > 0 && lines[blockStart - 1].trim().startsWith('//')) {
+          blockStart--;
+        }
+        insertLineIndex = blockStart;
+        break;
+      }
+    }
+    checkLine--;
+  }
+
+  lines.splice(insertLineIndex, 0, creditEntryCode.trimEnd());
+  return lines.join('\n');
+}
+
+  // Sort new credits by year descending before inserting each one
+  newCredits.sort((a, b) => {
+    const yA = parseInt((a.year.match(/\b\d{4}\b/)?.[0]) || '0', 10);
+    const yB = parseInt((b.year.match(/\b\d{4}\b/)?.[0]) || '0', 10);
+    return yB - yA;
+  });
+
+  // Process and add each new credit chronologically as per date
   let updatedContent = filmographyContent;
-  let newEntriesCode = '';
 
   for (const credit of newCredits) {
     let id = generateId(credit.title, credit.year);
@@ -283,26 +356,14 @@ async function sync() {
     year: '${credit.year}',
     category: '${credit.category}',
     studio: '${credit.studio.replace(/'/g, "\\'")}',
-  },
-`;
-    newEntriesCode += entryCode;
-  }
+  },`;
 
-  // Insert new entries under Upcoming & Recent Productions
-  const insertMarker = '// Upcoming & Recent Productions';
-  if (updatedContent.includes(insertMarker)) {
-    const parts = updatedContent.split(insertMarker);
-    const subParts = parts[1].split('// ----------------------------------------------------');
-    updatedContent = `${parts[0]}${insertMarker}${subParts[0]}// ----------------------------------------------------\n${newEntriesCode}${subParts.slice(1).join('// ----------------------------------------------------')}`;
-  } else {
-    updatedContent = updatedContent.replace(
-      'export const filmographyData: FilmCredit[] = [',
-      `export const filmographyData: FilmCredit[] = [\n${newEntriesCode}`
-    );
+    console.log(`  📅 Positioning "${credit.title}" (${credit.year}) chronologically as per date into filmographyData.ts...`);
+    updatedContent = insertCreditChronologically(updatedContent, entryCode, credit.year);
   }
 
   fs.writeFileSync(FILMOGRAPHY_FILE, updatedContent, 'utf8');
-  console.log(`\n🎉 Successfully updated ${FILMOGRAPHY_FILE} with ${newCredits.length} new credit(s)!`);
+  console.log(`\n🎉 Successfully updated ${FILMOGRAPHY_FILE} with ${newCredits.length} new credit(s) arranged by date!`);
 }
 
 sync().catch(err => {

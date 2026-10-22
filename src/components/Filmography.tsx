@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { ChevronRight, ExternalLink, LayoutGrid, List } from 'lucide-react';
-import { filmographyData, FilmCredit } from '@/data/filmographyData';
+import { filmographyData, FilmCredit, sortCreditsByLatestDate } from '@/data/filmographyData';
 import FilmDetailModal from './FilmDetailModal';
 
 type CategoryFilter = 'all' | 'film' | 'tv';
@@ -32,12 +32,13 @@ export default function Filmography() {
     }));
   };
 
-  // Filter credits
+  // Filter credits and ALWAYS arrange as per latest date / year descending
   const filteredCredits = useMemo(() => {
-    return filmographyData.filter((item) => {
+    const list = filmographyData.filter((item) => {
       if (filter === 'all') return true;
       return item.category === filter;
     });
+    return sortCreditsByLatestDate(list);
   }, [filter]);
 
   // Show all movies directly in one continuous scroll
