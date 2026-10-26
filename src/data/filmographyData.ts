@@ -68,6 +68,14 @@ export const filmographyData: FilmCredit[] = [
     studio: 'Pixomondo YUL',
   },
   {
+    id: 'clayface',
+    title: 'Clayface',
+    role: 'Lead Visual Effects Artist',
+    year: '2026',
+    category: 'film',
+    studio: 'Framestore',
+  },
+  {
     id: 'murderbot',
     title: 'Murderbot',
     role: 'Asset Supervisor',
